@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islam & Co | Distribution Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --pepsi-blue: #002f6c;
+            --pepsi-red: #e53935;
+            --gold: #ffca28;
+            --sidebar-dark: #001226;
+            --bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --success-green: #00c853; 
+            --danger-red: #ff1744;    
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: 'Urbanist', sans-serif; margin: 0; background: var(--bg); display: flex; height: 100vh; overflow: hidden; color: #1e293b; }
+
+        /* LOGIN SCREEN */
+        #login-screen { position: fixed; inset: 0; background: radial-gradient(circle at top right, #002f6c, #000814); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .login-card { background: white; padding: 50px; border-radius: 24px; width: 420px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .login-card img { width: 80px; margin-bottom: 15px; }
+        .login-card h1 { color: var(--pepsi-blue); font-size: 26px; margin: 0; font-weight: 700; }
+        .admin-access-text { color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 2px; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 20px; border: 2px solid #f1f5f9; border-radius: 12px; outline: none; text-align: center; font-size: 16px; transition: 0.3s; }
+        .login-card input.error { border-color: var(--pepsi-red); background: #fff5f5; }
+        .login-btn { width: 100%; padding: 14px; background: var(--pepsi-blue); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+
+        /* SIDEBAR & MAIN UI (ALL SAME) */
+        #sidebar { width: 280px; background: var(--sidebar-dark); color: white; display: none; flex-direction: column; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-header { padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); }
+        .sidebar-header img { width: 50px; }
+        .sidebar-header h2 { margin: 10px 0 5px; font-size: 20px; font-weight: 700; }
+        .menu-label { padding: 20px 25px 10px; font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; }
+        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px; font-weight: 600; font-size: 14px; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); color: var(--gold); border-left: 4px solid var(--gold); }
+        #main-container { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        header { height: 65px; background: white; padding: 0 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--card-border); }
+        .header-brand { display: flex; align-items: center; gap: 10px; color: var(--pepsi-blue); font-weight: 700; font-size: 18px; }
+        .content-body { flex: 1; padding: 20px; overflow-y: auto; }
+        .section-view { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: none; width: 100%; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { background: #f8fafc; text-align: left; padding: 12px; font-size: 12px; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px 12px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
+        .action-cell { display: flex; flex-direction: row; gap: 6px; align-items: center; justify-content: center; }
+        .btn-action { width: 42px; height: 38px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; color: white; }
+        .btn-delivered { background: var(--success-green) !important; }
+        .btn-cancel { background: var(--danger-red) !important; }
+        .btn-print { background: var(--pepsi-blue); }
+        .order-details-box { background: #f1f5f9; padding: 4px 10px; border-radius: 4px; font-size: 11px; margin-top: 5px; border-left: 3px solid var(--pepsi-blue); color: #334155; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dev-footer { position: fixed; bottom: 10px; right: 25px; font-size: 10px; color: #94a3b8; font-weight: 500; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Pepsi_logo_2014.svg">
+        <h1>Islam & Co</h1>
+        <p>DISTRIBUTION PORTAL</p>
+        <div class="admin-access-text">Admin Access</div>
+        <input type="password" id="passInput" placeholder="System Password">
+        <button class="login-btn" onclick="login()">LOGIN SYSTEM</button>
+        <div style="margin-top:25px; font-size:11px; color:#94a3b8; font-weight:600;">Powered by Mr. Shujaat</div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Pepsi_logo_2014.svg">
+        <h2>Islam & Co</h2>
+    </div>
+    <div class="menu-label">Main System</div>
+    <div class="nav-item active" onclick="navigate('dash', this)">📊 Dashboard</div>
+    <div class="nav-item" onclick="navigate('orders', this)">📝 Order Invoice & Booking</div>
+    <div class="menu-label">Settings</div>
+    <div class="nav-item" onclick="navigate('settings', this)">⚙️ Update Password</div>
+    <div class="menu-label">Data</div>
+    <div class="nav-item" onclick="navigate('rates', this)">💰 Rate List</div>
+    <div class="nav-item" onclick="navigate('reports', this)">📈 Sales Report</div>
+    <div class="menu-label">User</div>
+    <div class="nav-item" onclick="location.reload()" style="color:var(--pepsi-red);">🚪 Logout</div>
+    <div style="margin-top:auto; padding:20px; border-top:1px solid rgba(255,255,255,0.05); font-size:10px; color:#64748b;">
+        Designed & Maintained By:<br><b style="color:white; font-size:11px;">Mr. Shujaat</b>
+    </div>
+</div>
+
+<div id="main-container">
+    <header>
+        <div class="header-brand">
+            <button style="background:var(--pepsi-blue);color:white;border:none;padding:8px;border-radius:5px;" onclick="toggleSidebar()">☰ MENU</button>
+            <span style="margin-left:10px;">Islam & Co Portal</span>
+        </div>
+    </header>
+
+    <div class="content-body">
+        <div id="view-dash" class="section-view" style="display:block;">
+            <h2>Business Summary</h2>
+            <div style="display:flex; gap:15px;">
+                <div style="flex:1; padding:20px; background:#fff; border-radius:12px; border-left:5px solid var(--pepsi-blue); box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                    <small>TOTAL ORDERS</small><h2 id="stat-orders" style="margin:5px 0;">0</h2>
+                </div>
+                <div style="flex:1; padding:20px; background:#fff; border-radius:12px; border-left:5px solid #10b981; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                    <small>NET SALE</small><h2 id="stat-sale" style="margin:5px 0;">Rs. 0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-orders" class="section-view">
+            <div id="sm-list-view"><h3 style="margin:0 0 15px;">Salesmen</h3><div id="sm-list-container"></div></div>
+            <div id="invoice-view" style="display:none;">
+                <button onclick="backToSM()" style="padding:6px 12px; cursor:pointer; margin-bottom:10px;">← Back</button>
+                <h4 id="current-sm" style="color:var(--pepsi-blue); margin:5px 0 15px;"></h4>
+                <table>
+                    <thead><tr><th style="text-align:left;">Shop & Products</th><th style="text-align:left;">Amount</th><th style="text-align:center;">Actions</th></tr></thead>
+                    <tbody id="ordersBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-settings" class="section-view">
+            <h3>System Settings</h3>
+            <div style="max-width:300px; margin-top:20px;">
+                <label style="font-size:12px; font-weight:700; color:#64748b;">NEW SYSTEM PASSWORD</label>
+                <input type="text" id="newPass" placeholder="Enter New Password" style="width:100%; padding:12px; border:2px solid #f1f5f9; border-radius:8px; margin:10px 0;">
+                <button onclick="updatePass()" style="width:100%; padding:12px; background:var(--pepsi-blue); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">SAVE PASSWORD</button>
+            </div>
+        </div>
+
+        <div id="view-rates" class="section-view">
+            <h3>Product Rate & Discount List</h3>
+            <table>
+                <thead>
+                    <tr><th>Brand</th><th>Product Name</th><th>Rate (Rs)</th><th style="color:var(--pepsi-red);">Discount (Rs)</th></tr>
+                </thead>
+                <tbody id="ratesBody"></tbody>
+            </table>
+        </div>
+
+        <div id="view-reports" class="section-view" style="text-align:center; padding:60px 0;">
+            <h3 style="margin-bottom:20px;">Custom Sales Report</h3>
+            <div style="background:#f1f5f9; padding:30px; border-radius:15px; display:inline-block; border:1px solid #e2e8f0; text-align:left;">
+                <div style="display:flex; gap:15px; margin-bottom:20px;">
+                    <div>
+                        <label style="display:block; margin-bottom:5px; font-size:12px; font-weight:700; color:var(--pepsi-blue);">FROM DATE:</label>
+                        <input type="date" id="dateStart" style="padding:10px; border-radius:8px; border:2px solid #cbd5e1; outline:none; width:180px;">
+                    </div>
+                    <div>
+                        <label style="display:block; margin-bottom:5px; font-size:12px; font-weight:700; color:var(--pepsi-blue);">TO DATE:</label>
+                        <input type="date" id="dateEnd" style="padding:10px; border-radius:8px; border:2px solid #cbd5e1; outline:none; width:180px;">
+                    </div>
+                </div>
+                <button onclick="exportExcel()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">📥 DOWNLOAD FILTERED REPORT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dev-footer" id="dev-tag" style="display:none;">® Web Master Mr. Raja</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzmn_7zizC9P_2D2OPVzsGZminrSeMmN5CuRon8fprZrvFxT72JhTXu1k4WZi93E1DeoQ/exec';
+    let allData = [], allRates = [], currentPass = localStorage.getItem('portalPass') || "1234";
+
+    // --- LOGIN WITH ERROR HANDLING ---
+    function login() {
+        const passIn = document.getElementById('passInput');
+        if(passIn.value === currentPass) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-container').style.display = 'flex';
+            document.getElementById('dev-tag').style.display = 'block';
+            passIn.classList.remove('error');
+            fetchData();
+        } else {
+            passIn.classList.add('error');
+            alert("Ghalat Password! Dobara koshish karein.");
+            passIn.value = "";
+            passIn.focus();
+        }
+    }
+
+    function updatePass() {
+        const np = document.getElementById('newPass').value;
+        if(np.length < 1) return alert("Enter a valid password");
+        localStorage.setItem('portalPass', np);
+        currentPass = np;
+        alert("Password updated successfully!");
+    }
+
+    async function fetchData() {
+        try {
+            const resO = await fetch(scriptURL + "?get=reports");
+            allData = await resO.json();
+            const resR = await fetch(scriptURL);
+            const dR = await resR.json();
+            allRates = dR.rates;
+            updateUI();
+        } catch(e) { console.log("Fetch Error"); }
+    }
+
+    function updateUI() {
+        document.getElementById('stat-orders').innerText = allData.length;
+        let total = 0;
+        allData.forEach(o => {
+            let num = parseFloat(String(o.amount).replace(/[^\d.-]/g, ''));
+            if (!isNaN(num)) total += num;
+        });
+        document.getElementById('stat-sale').innerText = "Rs. " + Math.round(total).toLocaleString();
+
+        const list = [...new Set(allData.map(o => o.salesman))];
+        document.getElementById('sm-list-container').innerHTML = list.map(sm => `
+            <div style="padding:12px; border:1px solid var(--card-border); border-radius:10px; margin-bottom:8px; display:flex; justify-content:space-between; cursor:pointer; background:#fff;" onclick="viewInvoices('${sm}')">
+                <span style="font-weight:700;">👤 ${sm}</span>
+                <span style="color:var(--pepsi-blue); font-weight:700;">${allData.filter(o=>o.salesman===sm).length} Orders</span>
+            </div>`).join('');
+
+        document.getElementById('ratesBody').innerHTML = (allRates || []).slice(1).map(r => `
+            <tr><td>${r[0] || '-'}</td><td><b>${r[1] || '-'}</b></td><td>Rs. ${r[2] || '0'}</td><td style="color:var(--pepsi-red); font-weight:bold;">${r[3] || '0'}</td></tr>`).join('');
+    }
+
+    function viewInvoices(name) {
+        document.getElementById('sm-list-view').style.display = 'none';
+        document.getElementById('invoice-view').style.display = 'block';
+        document.getElementById('current-sm').innerText = "Salesman: " + name;
+        document.getElementById('ordersBody').innerHTML = allData.filter(o => o.salesman === name).reverse().map(o => `
+            <tr>
+                <td><b style="color:var(--pepsi-blue);">${o.shop}</b><br><div class="order-details-box">📦 ${o.details.replace(/,/g, ' | ')}</div></td>
+                <td style="font-weight:700; white-space:nowrap;">Rs. ${o.amount}</td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn-action btn-delivered" onclick="alert('Confirmed')">✅</button>
+                        <button class="btn-action btn-cancel" onclick="if(confirm('Cancel?')) alert('Deleted')">❌</button>
+                        <button class="btn-action btn-print" onclick='printBill(${JSON.stringify(o)})'>🖨️</button>
+                    </div>
+                </td>
+            </tr>`).join('');
+    }
+
+    function backToSM() { document.getElementById('sm-list-view').style.display = 'block'; document.getElementById('invoice-view').style.display = 'none'; }
+    function toggleSidebar() { const sb = document.getElementById('sidebar'); sb.style.display = (sb.style.display === 'none' || sb.style.display === '') ? 'flex' : 'none'; }
+    function navigate(id, el) {
+        document.querySelectorAll('.section-view').forEach(v => v.style.display = 'none');
+        document.getElementById('view-' + id).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        if(id === 'orders') backToSM();
+        if(window.innerWidth < 1000) toggleSidebar();
+    }
+
+    function printBill(order) {
+        const w = window.open('', '_blank');
+        w.document.write(`<html><body style="font-family:sans-serif; padding:20px;">
+            <div style="border:2px solid #002f6c; padding:20px; border-radius:10px; max-width:350px; margin:auto;">
+                <h2 style="text-align:center; color:#002f6c; margin:0;">ISLAM & Co</h2><hr>
+                <p><b>Shop:</b> ${order.shop}<br><b>SM:</b> ${order.salesman}</p>
+                <div style="border:1px solid #eee; padding:12px; font-size:12px; white-space:pre-wrap;">${order.details.replace(/,/g, '\n')}</div>
+                <div style="background:#f1f5f9; padding:12px; text-align:center; font-weight:700; margin-top:10px;">TOTAL: ${order.amount}</div>
+                <p style="text-align:center; font-size:10px; margin-top:20px; color:#94a3b8;">Managed by Mr. Shujaat</p>
+            </div><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
+    }
+
+    function exportExcel() { 
+        const start = document.getElementById('dateStart').value;
+        const end = document.getElementById('dateEnd').value;
+        let filteredData = allData;
+        if(start || end) {
+            filteredData = allData.filter(order => {
+                const orderDate = (order.timestamp || "").split('T')[0]; 
+                if(start && end) return orderDate >= start && orderDate <= end;
+                if(start) return orderDate >= start;
+                if(end) return orderDate <= end;
+                return true;
+            });
+        }
+        if(filteredData.length === 0) return alert("Data nahi mila!");
+        const ws = XLSX.utils.json_to_sheet(filteredData); 
+        const wb = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(wb, ws, "Sales"); 
+        XLSX.writeFile(wb, "IslamCo_Report.xlsx"); 
+    }
+</script>
+</body>
+  </html>
