@@ -1,290 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam & Co | Distribution Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        :root {
-            --pepsi-blue: #002f6c;
-            --pepsi-red: #e53935;
-            --gold: #ffca28;
-            --sidebar-dark: #001226;
-            --bg: #f8fafc;
-            --card-border: #e2e8f0;
-            --success-green: #00c853; 
-            --danger-red: #ff1744;    
-        }
-
-        * { box-sizing: border-box; }
-        body { font-family: 'Urbanist', sans-serif; margin: 0; background: var(--bg); display: flex; height: 100vh; overflow: hidden; color: #1e293b; }
-
-        /* LOGIN SCREEN */
-        #login-screen { position: fixed; inset: 0; background: radial-gradient(circle at top right, #002f6c, #000814); display: flex; align-items: center; justify-content: center; z-index: 10000; }
-        .login-card { background: white; padding: 50px; border-radius: 24px; width: 420px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .login-card img { width: 80px; margin-bottom: 15px; }
-        .login-card h1 { color: var(--pepsi-blue); font-size: 26px; margin: 0; font-weight: 700; }
-        .admin-access-text { color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 25px; letter-spacing: 2px; }
-        .login-card input { width: 100%; padding: 14px; margin-bottom: 20px; border: 2px solid #f1f5f9; border-radius: 12px; outline: none; text-align: center; font-size: 16px; transition: 0.3s; }
-        .login-card input.error { border-color: var(--pepsi-red); background: #fff5f5; }
-        .login-btn { width: 100%; padding: 14px; background: var(--pepsi-blue); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-
-        /* SIDEBAR & MAIN UI (ALL SAME) */
-        #sidebar { width: 280px; background: var(--sidebar-dark); color: white; display: none; flex-direction: column; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.05); }
-        .sidebar-header { padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); }
-        .sidebar-header img { width: 50px; }
-        .sidebar-header h2 { margin: 10px 0 5px; font-size: 20px; font-weight: 700; }
-        .menu-label { padding: 20px 25px 10px; font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; }
-        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; gap: 15px; font-weight: 600; font-size: 14px; }
-        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); color: var(--gold); border-left: 4px solid var(--gold); }
-        #main-container { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        header { height: 65px; background: white; padding: 0 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--card-border); }
-        .header-brand { display: flex; align-items: center; gap: 10px; color: var(--pepsi-blue); font-weight: 700; font-size: 18px; }
-        .content-body { flex: 1; padding: 20px; overflow-y: auto; }
-        .section-view { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: none; width: 100%; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { background: #f8fafc; text-align: left; padding: 12px; font-size: 12px; color: #64748b; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 12px 12px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
-        .action-cell { display: flex; flex-direction: row; gap: 6px; align-items: center; justify-content: center; }
-        .btn-action { width: 42px; height: 38px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; color: white; }
-        .btn-delivered { background: var(--success-green) !important; }
-        .btn-cancel { background: var(--danger-red) !important; }
-        .btn-print { background: var(--pepsi-blue); }
-        .order-details-box { background: #f1f5f9; padding: 4px 10px; border-radius: 4px; font-size: 11px; margin-top: 5px; border-left: 3px solid var(--pepsi-blue); color: #334155; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .dev-footer { position: fixed; bottom: 10px; right: 25px; font-size: 10px; color: #94a3b8; font-weight: 500; opacity: 0.7; }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Islam and Co | Order Management System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root { --p: #002366; --a: #FFC107; --w: #25D366; }
+    body { background-color: #f0f4f8; font-family: 'Segoe UI', sans-serif; padding-bottom: 40px; }
+    .promo-container { background: #d00000; color: white; padding: 8px; font-weight: bold; font-size: 14px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .header { padding: 20px 10px; text-align: center; background: linear-gradient(135deg, #001f5c 0%, #003a8c 100%); border-bottom: 4px solid var(--a); position: relative; }
+    .header-title { font-size: 24px; font-weight: 800; color: #FFFFFF !important; margin: 0; letter-spacing: 1px; }
+    .header-subtitle { font-size: 11px; font-weight: 700; color: #fff; background: rgba(0,0,0,0.4); padding: 3px 15px; border-radius: 20px; display: inline-block; margin-top: 5px; border: 1px solid var(--a); }
+    .section-card { background: white; border-radius: 16px; margin: 15px 10px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: none; }
+    .section-title { color: var(--p); font-weight: 800; font-size: 15px; margin-bottom: 12px; border-left: 5px solid var(--a); padding-left: 10px; text-transform: uppercase; }
+    .form-control { border-radius: 10px; height: 45px; margin-bottom: 12px; border: 1.5px solid #ced4da; font-weight: 600; color: #333; }
+    .btn-search { background: var(--p); color: white; border-radius: 10px; width: 55px; height: 45px; }
+    .cart-item { background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 8px; border: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center; }
+    .btn-remove { color: #d00000; background: none; border: none; font-size: 18px; padding: 0 8px; cursor: pointer; }
+    .bill-box { background: white; border: 1px solid #000000 !important; padding: 15px; font-family: Arial, sans-serif; color: #000; margin: 15px auto; max-width: 600px; } 
+    .bill-header-table, .bill-info-table, .bill-items-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; color: #000; }
+    .invoice-title { font-size: 14px; font-weight: bold; text-align: right; text-transform: uppercase; }
+    .dist-details { font-size: 10px; line-height: 1.4; }
+    .dispatch-text { margin: 4px 0; font-size: 10px; font-weight: bold; }
+    .bill-items-table th { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 5px 2px; font-size: 11px; font-weight: bold; text-align: left; }
+    .bill-items-table td { padding: 4px 2px; font-size: 11px; border-bottom: 1px solid #eee; }
+    .border-top-bottom { border-top: 1px solid #000000 !important; border-bottom: 1px solid #000000 !important; font-weight: bold; }
+    .bill-total-box { float: right; width: 55%; margin-top: 5px; font-size: 11px; color: #000; }
+    .net-amount-box { border: 1px solid #000000 !important; padding: 2px 6px; font-weight: bold; display: inline-block; font-size: 12px; background: #f9f9f9; }
+    .bill-footer-section { margin-top: 20px; padding-top: 6px; border-top: 1px dashed #000; font-size: 10px; line-height: 1.4; color: #000; } 
+    .btn-wa { background: var(--w); color: white; font-weight: bold; width: 100%; height: 55px; border-radius: 12px; font-size: 16px; border: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
+    .btn-download { background: #343a40; color: white; font-weight: bold; width: 100%; height: 50px; border-radius: 12px; border: none; }
+    .login-screen { display: block; max-width: 420px; margin: 50px auto; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+    .main-app-content { display: none; }
+    #loadingOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; font-weight:bold; color:var(--p); }
+  </style>
 </head>
 <body>
 
-<div id="login-screen">
-    <div class="login-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Pepsi_logo_2014.svg">
-        <h1>Islam & Co</h1>
-        <p>DISTRIBUTION PORTAL</p>
-        <div class="admin-access-text">Admin Access</div>
-        <input type="password" id="passInput" placeholder="System Password">
-        <button class="login-btn" onclick="login()">LOGIN SYSTEM</button>
-        <div style="margin-top:25px; font-size:11px; color:#94a3b8; font-weight:600;">Powered by Mr. Shujaat</div>
-    </div>
+<div id="loadingOverlay">
+  <div class="spinner-border text-primary mb-3" role="status"></div>
+  <div>Syncing with Islam & Co. Cloud System...</div>
 </div>
 
-<div id="sidebar">
-    <div class="sidebar-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Pepsi_logo_2014.svg">
-        <h2>Islam & Co</h2>
-    </div>
-    <div class="menu-label">Main System</div>
-    <div class="nav-item active" onclick="navigate('dash', this)">📊 Dashboard</div>
-    <div class="nav-item" onclick="navigate('orders', this)">📝 Order Invoice & Booking</div>
-    <div class="menu-label">Settings</div>
-    <div class="nav-item" onclick="navigate('settings', this)">⚙️ Update Password</div>
-    <div class="menu-label">Data</div>
-    <div class="nav-item" onclick="navigate('rates', this)">💰 Rate List</div>
-    <div class="nav-item" onclick="navigate('reports', this)">📈 Sales Report</div>
-    <div class="menu-label">User</div>
-    <div class="nav-item" onclick="location.reload()" style="color:var(--pepsi-red);">🚪 Logout</div>
-    <div style="margin-top:auto; padding:20px; border-top:1px solid rgba(255,255,255,0.05); font-size:10px; color:#64748b;">
-        Designed & Maintained By:<br><b style="color:white; font-size:11px;">Mr. Shujaat</b>
-    </div>
+<div class="promo-container"><marquee id="promoTxt">Connecting to Islam and Co. Data Cloud Securely...</marquee></div>
+
+<div class="header">
+  <h1 class="header-title">ISLAM AND CO.</h1>
+  <div class="header-subtitle"><i class="fas fa-shipping-fast mr-1"></i> ONLINE ORDERING PORTAL</div>
 </div>
 
-<div id="main-container">
-    <header>
-        <div class="header-brand">
-            <button style="background:var(--pepsi-blue);color:white;border:none;padding:8px;border-radius:5px;" onclick="toggleSidebar()">☰ MENU</button>
-            <span style="margin-left:10px;">Islam & Co Portal</span>
-        </div>
-    </header>
+<div id="loginSection" class="login-screen">
+  <div class="text-center mb-4">
+    <i class="fas fa-user-shield fa-3x text-primary mb-2"></i>
+    <h4 class="font-weight-bold" style="color:var(--p);">Staff Authentication</h4>
+    <p class="text-muted small">Select your name from sheet list & type security password.</p>
+  </div>
+  <label class="font-weight-bold small">Select Booker / User Name:</label>
+  <select id="userSelect" class="form-control" style="background:#fffbe6; border:1.5px solid #ffc107;">
+    <option value="">-- Loading Staff Profiles --</option>
+  </select>
+  <label class="font-weight-bold small">Enter Account Password:</label>
+  <input type="password" id="userPass" class="form-control" placeholder="••••••••">
+  <button class="btn btn-primary btn-block font-weight-bold mt-2" style="height:48px; border-radius:10px;" onclick="verifyStaffLogin()">UNLOCK SYSTEM</button>
+</div>
 
-    <div class="content-body">
-        <div id="view-dash" class="section-view" style="display:block;">
-            <h2>Business Summary</h2>
-            <div style="display:flex; gap:15px;">
-                <div style="flex:1; padding:20px; background:#fff; border-radius:12px; border-left:5px solid var(--pepsi-blue); box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                    <small>TOTAL ORDERS</small><h2 id="stat-orders" style="margin:5px 0;">0</h2>
-                </div>
-                <div style="flex:1; padding:20px; background:#fff; border-radius:12px; border-left:5px solid #10b981; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                    <small>NET SALE</small><h2 id="stat-sale" style="margin:5px 0;">Rs. 0</h2>
-                </div>
-            </div>
-        </div>
+<div id="mainAppSection" class="main-app-content">
+  <div class="container-fluid px-2">
+    <div class="text-right px-2 mt-2">
+      <span class="badge badge-secondary p-2 mr-2">Active: <span id="currentStaffBadge">---</span></span>
+      <button class="btn btn-sm btn-outline-danger font-weight-bold" style="border-radius:6px;" onclick="triggerStaffLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
 
-        <div id="view-orders" class="section-view">
-            <div id="sm-list-view"><h3 style="margin:0 0 15px;">Salesmen</h3><div id="sm-list-container"></div></div>
-            <div id="invoice-view" style="display:none;">
-                <button onclick="backToSM()" style="padding:6px 12px; cursor:pointer; margin-bottom:10px;">← Back</button>
-                <h4 id="current-sm" style="color:var(--pepsi-blue); margin:5px 0 15px;"></h4>
-                <table>
-                    <thead><tr><th style="text-align:left;">Shop & Products</th><th style="text-align:left;">Amount</th><th style="text-align:center;">Actions</th></tr></thead>
-                    <tbody id="ordersBody"></tbody>
-                </table>
-            </div>
+    <div class="section-card">
+      <div class="section-title">Retailer & Shop Profiling</div>
+      <div class="input-group mb-2">
+        <input type="text" id="inputId" class="form-control" placeholder="Enter Outlet ID to Search">
+        <div class="input-group-append">
+          <button class="btn btn-search" onclick="searchMasterData()"><i class="fas fa-search"></i></button>
         </div>
+      </div>
+      <input type="text" id="outName" class="form-control" placeholder="Shop / Outlet Name" oninput="liveBillSync()">
+      <input type="text" id="outPhone" class="form-control" placeholder="Contact/Phone Number" oninput="liveBillSync()">
+      <input type="text" id="outAddr" class="form-control" placeholder="Full Delivery Address" oninput="liveBillSync()">
+      <input type="text" id="outBooker" class="form-control" placeholder="Assigned Booker" readonly>
+    </div>
 
-        <div id="view-settings" class="section-view">
-            <h3>System Settings</h3>
-            <div style="max-width:300px; margin-top:20px;">
-                <label style="font-size:12px; font-weight:700; color:#64748b;">NEW SYSTEM PASSWORD</label>
-                <input type="text" id="newPass" placeholder="Enter New Password" style="width:100%; padding:12px; border:2px solid #f1f5f9; border-radius:8px; margin:10px 0;">
-                <button onclick="updatePass()" style="width:100%; padding:12px; background:var(--pepsi-blue); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">SAVE PASSWORD</button>
-            </div>
-        </div>
+    <div class="section-card" style="border: 2px solid var(--w); background: #f4fff7;">
+      <div class="section-title" style="color: #0d5c26;"><i class="fab fa-whatsapp mr-2"></i> Route Distribution Target</div>
+      <select id="waTarget" class="form-control font-weight-bold" style="border: 1.5px solid var(--w); color: #0d5c26;">
+        <option value="923465846781">Asiam Hussain</option>
+        <option value="923415011140">Adnan Hassan</option>
+        <option value="923061645603">Saqib Abbas</option>
+        <option value="923461649698">Arslan Sajid</option>
+        <option value="923150564149">Asim Raza</option>
+        <option value="923105714429">Naqeeb Ur Rehman</option>
+      </select>
+    </div>
 
-        <div id="view-rates" class="section-view">
-            <h3>Product Rate & Discount List</h3>
-            <table>
-                <thead>
-                    <tr><th>Brand</th><th>Product Name</th><th>Rate (Rs)</th><th style="color:var(--pepsi-red);">Discount (Rs)</th></tr>
-                </thead>
-                <tbody id="ratesBody"></tbody>
+    <div class="section-card">
+      <div class="section-title">Product Catalog & Booking 🛒</div>
+      <select id="prodDrop" class="form-control" style="background:#fffbe6;">
+        <option value="">-- Fetching Stock Prices --</option>
+      </select>
+      <div class="row no-gutters">
+        <div class="col-7 pr-2"><input type="number" id="prodQty" class="form-control" value="1" min="1"></div>
+        <div class="col-5"><button class="btn btn-success btn-block" style="border-radius:10px; font-weight:bold; height:45px;" onclick="addCatalogItem()">ADD TO CART</button></div>
+      </div>
+    </div>
+
+    <div id="cartDisplayList" class="px-2 mb-3"></div>
+
+    <div class="section-card" style="padding:10px; background:#999; border-radius:12px;">
+      <div id="captureArea">
+        <div class="bill-box" id="mainBill">
+          <table class="bill-header-table">
+            <tr><td><span style="font-size: 15px; font-weight: bold; color: #000;">ISLAM AND CO.</span></td><td class="invoice-title">SALE INVOICE</td></tr>
+          </table>
+          <div style="text-align: center; font-size: 10px; font-weight: bold; margin-bottom:5px;" id="billDate"></div>
+          <table class="bill-info-table">
+            <tr>
+              <td width="65%" class="dist-details">
+                <strong>Distributor CNIC:</strong> 37202-4977404-3<br>
+                <strong>Distributor NTN:</strong> A439767-0<br>
+                <strong>Address:</strong> CHOA SAIDAN SHAH, CHAKWAL
+              </td>
+              <td width="35%" style="text-align: right; font-size: 10px;"><br><strong>Invoice#</strong> <span id="billInvNum">000000</span></td>
+            </tr>
+          </table>
+          <p class="dispatch-text">Dispatch# 1632207 &nbsp;&nbsp; 14981778507429067</p>
+          <table class="bill-info-table" style="font-size:10.5px; border-top:1px solid #000; padding-top:4px;">
+            <tr><td><strong>Outlet ID:</strong> <span id="bId">---</span></td><td style="text-align: right;"><strong>Contact No:</strong> <span id="bPhone">---</span></td></tr>
+            <tr><td><strong>Outlet Name:</strong> <span id="bName">---</span></td><td style="text-align: right;"><strong>Route:</strong> 2129 - Katas Route</td></tr>
+            <tr><td colspan="2"><strong>Address:</strong> <span id="bAddr">---</span></td></tr>
+          </table>
+          <table class="bill-items-table">
+            <thead>
+              <tr><th width="45%">Package / Brand</th><th width="10%" style="text-align: center;">QTY</th><th width="15%" style="text-align: right;">Rate</th><th width="15%" style="text-align: right;">Gross</th><th width="15%" style="text-align: right;">Discount</th></tr>
+            </thead>
+            <tbody id="billTbody"></tbody>
+            <tfoot><tr class="border-top-bottom"><td>Total Summary</td><td style="text-align: center;" id="totalQty">0</td><td></td><td></td><td></td></tr></tfoot>
+          </table>
+          <div class="bill-total-box">
+            <table width="100%" style="font-size:11px; line-height:1.5;">
+              <tr><td>Gross Amount:</td><td align="right" id="sumGross">0.00</td></tr>
+              <tr><td>Total Discount:</td><td align="right" style="color: #d00000;" id="sumDisc">0.00</td></tr>
+              <tr><td style="font-weight: bold;">NET AMOUNT:</td><td align="right"><div class="net-amount-box" id="sumNet">0.00</div></td></tr>
             </table>
+          </div>
+          <div style="clear: both;"></div>
+          <div class="bill-footer-section">
+            <table width="100%"><tr><td><strong>Management:</strong><br>Mr Raja</td><td><strong>Booker:</strong><br><span id="bBooker">---</span></td><td><strong>Driver:</strong><br>NAUMAN HAYAT</td></tr></table>
+          </div>
         </div>
-
-        <div id="view-reports" class="section-view" style="text-align:center; padding:60px 0;">
-            <h3 style="margin-bottom:20px;">Custom Sales Report</h3>
-            <div style="background:#f1f5f9; padding:30px; border-radius:15px; display:inline-block; border:1px solid #e2e8f0; text-align:left;">
-                <div style="display:flex; gap:15px; margin-bottom:20px;">
-                    <div>
-                        <label style="display:block; margin-bottom:5px; font-size:12px; font-weight:700; color:var(--pepsi-blue);">FROM DATE:</label>
-                        <input type="date" id="dateStart" style="padding:10px; border-radius:8px; border:2px solid #cbd5e1; outline:none; width:180px;">
-                    </div>
-                    <div>
-                        <label style="display:block; margin-bottom:5px; font-size:12px; font-weight:700; color:var(--pepsi-blue);">TO DATE:</label>
-                        <input type="date" id="dateEnd" style="padding:10px; border-radius:8px; border:2px solid #cbd5e1; outline:none; width:180px;">
-                    </div>
-                </div>
-                <button onclick="exportExcel()" style="width:100%; padding:15px; background:#16a34a; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">📥 DOWNLOAD FILTERED REPORT</button>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
 
-<div class="dev-footer" id="dev-tag" style="display:none;">® Web Master Mr. Raja</div>
+    <div class="px-2 mb-4">
+      <button class="btn-download mb-3" onclick="downloadInvoiceJpg()"><i class="fas fa-file-download mr-2"></i> DOWNLOAD BILL IMAGE (JPG)</button>
+      <button class="btn-wa" onclick="triggerFinalOrderProcessing()"><i class="fab fa-whatsapp mr-2"></i> SEND WHATSAPP ✅</button>
+    </div>
+  </div>
+</div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzmn_7zizC9P_2D2OPVzsGZminrSeMmN5CuRon8fprZrvFxT72JhTXu1k4WZi93E1DeoQ/exec';
-    let allData = [], allRates = [], currentPass = localStorage.getItem('portalPass') || "1234";
+  // 100% Correct Updated URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbkrLROowU9S9sn-WTs-iMAeNdDJByO1jVzWy__KE8tMfQlkReinG2wo9GL5dGgaIB/exec";
+  
+  let serverData = {status:"", rates:[], master:[], users:[], promo:""};
+  let basket = []; 
 
-    // --- LOGIN WITH ERROR HANDLING ---
-    function login() {
-        const passIn = document.getElementById('passInput');
-        if(passIn.value === currentPass) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-container').style.display = 'flex';
-            document.getElementById('dev-tag').style.display = 'block';
-            passIn.classList.remove('error');
-            fetchData();
-        } else {
-            passIn.classList.add('error');
-            alert("Ghalat Password! Dobara koshish karein.");
-            passIn.value = "";
-            passIn.focus();
+  function handleServerResponse(response) {
+    document.getElementById('loadingOverlay').style.display = "none";
+    if(response.status === "success") {
+      serverData = response;
+      if(response.promo) document.getElementById('promoTxt').innerText = response.promo;
+      
+      let pD = document.getElementById('prodDrop');
+      pD.innerHTML = '<option value="">-- Select Product Item --</option>';
+      response.rates.forEach((row, index) => { 
+        if(index > 0 && row[0]) { 
+          let opt = new Option(`${row[0]} (Rs. ${row[2]})`, row[0]);
+          opt.setAttribute('data-rate', row[2]);
+          opt.setAttribute('data-disc', row[3] || 0);
+          pD.add(opt);
         }
+      });
+
+      let uSel = document.getElementById('userSelect');
+      uSel.innerHTML = '<option value="">-- Choose Your Profile --</option>';
+      response.users.forEach((row, index) => {
+        if(index > 0 && row[0]) uSel.add(new Option(row[0], row[0])); 
+      });
+
+      if(localStorage.getItem('isStaffLoggedIn') === 'true') {
+        bypassToMainPortal(localStorage.getItem('activeStaffUser'));
+      }
+    } else {
+      alert("Sheet Error: " + response.message);
     }
+  }
 
-    function updatePass() {
-        const np = document.getElementById('newPass').value;
-        if(np.length < 1) return alert("Enter a valid password");
-        localStorage.setItem('portalPass', np);
-        currentPass = np;
-        alert("Password updated successfully!");
+  window.onload = function() {
+    document.getElementById('billDate').innerText = new Date().toLocaleString();
+    document.getElementById('billInvNum').innerText = Math.floor(100000 + Math.random() * 900000);
+    
+    // Cloud JSONP Sync Engine
+    let jsonpScript = document.createElement('script');
+    jsonpScript.src = SCRIPT_URL + "?callback=handleServerResponse";
+    jsonpScript.onerror = function() {
+      document.getElementById('loadingOverlay').style.display = "none";
+      alert("Please ensure your Google Web App deployment is set to 'Anyone'.");
+    };
+    document.body.appendChild(jsonpScript);
+  };
+
+  function verifyStaffLogin() {
+    let selectedUser = document.getElementById('userSelect').value;
+    let inputPassword = document.getElementById('userPass').value.trim();
+    if(!selectedUser || !inputPassword) return alert("Select profile and enter password!");
+
+    let matchedUser = serverData.users.find(r => r[0].toString().trim() === selectedUser.trim());
+    if(matchedUser && matchedUser[1].toString().trim() === inputPassword) {
+        localStorage.setItem('isStaffLoggedIn', 'true');
+        localStorage.setItem('activeStaffUser', selectedUser);
+        bypassToMainPortal(selectedUser);
+    } else {
+        alert("Incorrect Password!");
     }
+  }
 
-    async function fetchData() {
-        try {
-            const resO = await fetch(scriptURL + "?get=reports");
-            allData = await resO.json();
-            const resR = await fetch(scriptURL);
-            const dR = await resR.json();
-            allRates = dR.rates;
-            updateUI();
-        } catch(e) { console.log("Fetch Error"); }
+  function bypassToMainPortal(username) {
+    document.getElementById('loginSection').style.display = "none";
+    document.getElementById('mainAppSection').style.display = "block";
+    document.getElementById('outBooker').value = username;
+    document.getElementById('currentStaffBadge').innerText = username;
+    document.querySelectorAll('#bBooker').forEach(el => el.innerText = username);
+  }
+
+  function triggerStaffLogout() {
+    localStorage.removeItem('isStaffLoggedIn');
+    localStorage.removeItem('activeStaffUser');
+    document.getElementById('mainAppSection').style.display = "none";
+    document.getElementById('loginSection').style.display = "block";
+  }
+
+  function searchMasterData() {
+    let queryId = document.getElementById('inputId').value.trim();
+    let matchRow = serverData.master.find(r => r[0].toString().trim() === queryId);
+    if(matchRow) {
+      document.getElementById('outName').value = matchRow[1] || ""; 
+      document.getElementById('outAddr').value = matchRow[2] || ""; 
+      document.getElementById('outPhone').value = matchRow[3] || "N/A"; 
+      liveBillSync();
+    } else { alert("Outlet ID not found!"); }
+  }
+
+  function liveBillSync() {
+    document.getElementById('bId').innerText = document.getElementById('inputId').value || "Manual Add";
+    document.getElementById('bName').innerText = document.getElementById('outName').value || "---";
+    document.getElementById('bPhone').innerText = document.getElementById('outPhone').value || "---";
+    document.getElementById('bAddr').innerText = document.getElementById('outAddr').value || "---";
+  }
+
+  function addCatalogItem() {
+    let pDrop = document.getElementById('prodDrop');
+    let itemName = pDrop.value;
+    let itemQty = parseInt(document.getElementById('prodQty').value);
+    if(!itemName || itemQty < 1) return alert("Select item and quantity!");
+
+    let selectedOption = pDrop.options[pDrop.selectedIndex];
+    let unitRate = parseFloat(selectedOption.getAttribute('data-rate')) || 0;
+    let unitDisc = parseFloat(selectedOption.getAttribute('data-disc')) || 0;
+
+    let existing = basket.find(p => p.name === itemName);
+    if(existing) {
+      existing.qty += itemQty;
+      existing.totalGross = existing.qty * unitRate;
+      existing.totalDisc = existing.qty * unitDisc;
+    } else {
+      basket.push({ name: itemName, qty: itemQty, rate: unitRate, totalGross: itemQty * unitRate, totalDisc: itemQty * unitDisc });
     }
+    renderCartAndInvoiceLayout();
+  }
 
-    function updateUI() {
-        document.getElementById('stat-orders').innerText = allData.length;
-        let total = 0;
-        allData.forEach(o => {
-            let num = parseFloat(String(o.amount).replace(/[^\d.-]/g, ''));
-            if (!isNaN(num)) total += num;
-        });
-        document.getElementById('stat-sale').innerText = "Rs. " + Math.round(total).toLocaleString();
+  function dropCartItem(idx) { basket.splice(idx, 1); renderCartAndInvoiceLayout(); }
 
-        const list = [...new Set(allData.map(o => o.salesman))];
-        document.getElementById('sm-list-container').innerHTML = list.map(sm => `
-            <div style="padding:12px; border:1px solid var(--card-border); border-radius:10px; margin-bottom:8px; display:flex; justify-content:space-between; cursor:pointer; background:#fff;" onclick="viewInvoices('${sm}')">
-                <span style="font-weight:700;">👤 ${sm}</span>
-                <span style="color:var(--pepsi-blue); font-weight:700;">${allData.filter(o=>o.salesman===sm).length} Orders</span>
-            </div>`).join('');
+  function renderCartAndInvoiceLayout() {
+    let bHtml = ""; let cHtml = ""; let gross = 0; let disc = 0; let qty = 0;
+    basket.forEach((item, index) => {
+      bHtml += `<tr><td>${item.name}</td><td align="center">${item.qty}</td><td align="right">${item.rate.toFixed(2)}</td><td align="right">${item.totalGross.toFixed(2)}</td><td align="right" style="color:red;">${item.totalDisc.toFixed(2)}</td></tr>`;
+      cHtml += `<div class="cart-item"><span><b>${item.name}</b> <span class="badge badge-dark">x${item.qty}</span></span><button class="btn-remove" onclick="dropCartItem(${index})"><i class="fas fa-trash-alt"></i></button></div>`;
+      gross += item.totalGross; disc += item.totalDisc; qty += item.qty;
+    });
+    document.getElementById('billTbody').innerHTML = bHtml;
+    document.getElementById('cartDisplayList').innerHTML = cHtml;
+    document.getElementById('totalQty').innerText = qty;
+    document.getElementById('sumGross').innerText = gross.toFixed(2);
+    document.getElementById('sumDisc').innerText = disc.toFixed(2);
+    document.getElementById('sumNet').innerText = (gross - disc).toFixed(2);
+  }
 
-        document.getElementById('ratesBody').innerHTML = (allRates || []).slice(1).map(r => `
-            <tr><td>${r[0] || '-'}</td><td><b>${r[1] || '-'}</b></td><td>Rs. ${r[2] || '0'}</td><td style="color:var(--pepsi-red); font-weight:bold;">${r[3] || '0'}</td></tr>`).join('');
-    }
+  function downloadInvoiceJpg() {
+    html2canvas(document.getElementById('captureArea'), { scale: 3, useCORS: true }).then(canvas => {
+      let a = document.createElement('a');
+      a.download = 'Invoice_' + document.getElementById('billInvNum').innerText + '.jpg';
+      a.href = canvas.toDataURL('image/jpeg', 0.9);
+      a.click();
+    });
+  }
 
-    function viewInvoices(name) {
-        document.getElementById('sm-list-view').style.display = 'none';
-        document.getElementById('invoice-view').style.display = 'block';
-        document.getElementById('current-sm').innerText = "Salesman: " + name;
-        document.getElementById('ordersBody').innerHTML = allData.filter(o => o.salesman === name).reverse().map(o => `
-            <tr>
-                <td><b style="color:var(--pepsi-blue);">${o.shop}</b><br><div class="order-details-box">📦 ${o.details.replace(/,/g, ' | ')}</div></td>
-                <td style="font-weight:700; white-space:nowrap;">Rs. ${o.amount}</td>
-                <td>
-                    <div class="action-cell">
-                        <button class="btn-action btn-delivered" onclick="alert('Confirmed')">✅</button>
-                        <button class="btn-action btn-cancel" onclick="if(confirm('Cancel?')) alert('Deleted')">❌</button>
-                        <button class="btn-action btn-print" onclick='printBill(${JSON.stringify(o)})'>🖨️</button>
-                    </div>
-                </td>
-            </tr>`).join('');
-    }
+  function triggerFinalOrderProcessing() {
+    if(basket.length === 0) return alert("Cart empty!");
+    let shopName = document.getElementById('outName').value.trim();
+    if(!shopName) return alert("Enter Shop Name!");
 
-    function backToSM() { document.getElementById('sm-list-view').style.display = 'block'; document.getElementById('invoice-view').style.display = 'none'; }
-    function toggleSidebar() { const sb = document.getElementById('sidebar'); sb.style.display = (sb.style.display === 'none' || sb.style.display === '') ? 'flex' : 'none'; }
-    function navigate(id, el) {
-        document.querySelectorAll('.section-view').forEach(v => v.style.display = 'none');
-        document.getElementById('view-' + id).style.display = 'block';
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-        if(id === 'orders') backToSM();
-        if(window.innerWidth < 1000) toggleSidebar();
-    }
+    let targetPhone = document.getElementById('waTarget').value;
+    let netVal = document.getElementById('sumNet').innerText;
+    
+    let payload = {
+      outletId: document.getElementById('inputId').value.trim() || "Manual Add",
+      outletName: shopName,
+      bookerName: document.getElementById('outBooker').value,
+      products: basket.map(p => `${p.name} (x${p.qty})`).join(" | "),
+      totalBill: netVal
+    };
 
-    function printBill(order) {
-        const w = window.open('', '_blank');
-        w.document.write(`<html><body style="font-family:sans-serif; padding:20px;">
-            <div style="border:2px solid #002f6c; padding:20px; border-radius:10px; max-width:350px; margin:auto;">
-                <h2 style="text-align:center; color:#002f6c; margin:0;">ISLAM & Co</h2><hr>
-                <p><b>Shop:</b> ${order.shop}<br><b>SM:</b> ${order.salesman}</p>
-                <div style="border:1px solid #eee; padding:12px; font-size:12px; white-space:pre-wrap;">${order.details.replace(/,/g, '\n')}</div>
-                <div style="background:#f1f5f9; padding:12px; text-align:center; font-weight:700; margin-top:10px;">TOTAL: ${order.amount}</div>
-                <p style="text-align:center; font-size:10px; margin-top:20px; color:#94a3b8;">Managed by Mr. Shujaat</p>
-            </div><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
-    }
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
 
-    function exportExcel() { 
-        const start = document.getElementById('dateStart').value;
-        const end = document.getElementById('dateEnd').value;
-        let filteredData = allData;
-        if(start || end) {
-            filteredData = allData.filter(order => {
-                const orderDate = (order.timestamp || "").split('T')[0]; 
-                if(start && end) return orderDate >= start && orderDate <= end;
-                if(start) return orderDate >= start;
-                if(end) return orderDate <= end;
-                return true;
-            });
-        }
-        if(filteredData.length === 0) return alert("Data nahi mila!");
-        const ws = XLSX.utils.json_to_sheet(filteredData); 
-        const wb = XLSX.utils.book_new(); 
-        XLSX.utils.book_append_sheet(wb, ws, "Sales"); 
-        XLSX.writeFile(wb, "IslamCo_Report.xlsx"); 
-    }
+    let msg = `*🚨 ISLAM AND CO. NEW ORDER*%0A━━━━━━━━━━━━━━━━━━━━━%0A🆔 *ID:* ${payload.outletId}%0A🏪 *Shop:* ${payload.outletName}%0A👤 *Booker:* ${payload.bookerName}%0A━━━━━━━━━━━━━━━━━━━━━%0A*ITEMS:*%0A` + basket.map(p => `📦 *${p.name}* (x${p.qty})`).join("%0A") + `%0A━━━━━━━━━━━━━━━━━━━━━%0A🔥 *NET AMOUNT:* Rs. ${netVal}%0A_Managed by Mr Raja_`;
+    window.open(`https://wa.me/${targetPhone}?text=${msg}`);
+  }
 </script>
 </body>
-  </html>
+    </html>
