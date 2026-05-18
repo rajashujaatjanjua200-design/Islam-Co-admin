@@ -166,8 +166,8 @@
 </div>
 
 <script>
-  // 100% Correct Updated URL
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxbkrLROowU9S9sn-WTs-iMAeNdDJByO1jVzWy__KE8tMfQlkReinG2wo9GL5dGgaIB/exec";
+  // Script URL Updated with the New Secure Dynamic Macro
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdXPOmlpIZJe1BJtf6kQyXuvErUDGcsSdXeHjsvZIGFChpQ7XKLNuypbPQInySoEo_/exec";
   
   let serverData = {status:"", rates:[], master:[], users:[], promo:""};
   let basket = []; 
@@ -207,12 +207,12 @@
     document.getElementById('billDate').innerText = new Date().toLocaleString();
     document.getElementById('billInvNum').innerText = Math.floor(100000 + Math.random() * 900000);
     
-    // Cloud JSONP Sync Engine
+    // Cloud Dynamic Script Injector for JSONP Cross-Origin Engine
     let jsonpScript = document.createElement('script');
     jsonpScript.src = SCRIPT_URL + "?callback=handleServerResponse";
     jsonpScript.onerror = function() {
       document.getElementById('loadingOverlay').style.display = "none";
-      alert("Please ensure your Google Web App deployment is set to 'Anyone'.");
+      alert("Cloud Sync Alert: Please verify your Google Script deployment is updated and accessible to 'Anyone'.");
     };
     document.body.appendChild(jsonpScript);
   };
@@ -331,8 +331,4 @@
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
 
     let msg = `*🚨 ISLAM AND CO. NEW ORDER*%0A━━━━━━━━━━━━━━━━━━━━━%0A🆔 *ID:* ${payload.outletId}%0A🏪 *Shop:* ${payload.outletName}%0A👤 *Booker:* ${payload.bookerName}%0A━━━━━━━━━━━━━━━━━━━━━%0A*ITEMS:*%0A` + basket.map(p => `📦 *${p.name}* (x${p.qty})`).join("%0A") + `%0A━━━━━━━━━━━━━━━━━━━━━%0A🔥 *NET AMOUNT:* Rs. ${netVal}%0A_Managed by Mr Raja_`;
-    window.open(`https://wa.me/${targetPhone}?text=${msg}`);
-  }
-</script>
-</body>
-    </html>
+    window.open(`https://wa.me/${targetPh
