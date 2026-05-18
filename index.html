@@ -24,14 +24,14 @@
         .search-btn { background: #ffcc00; color: #000; margin-top: 5px; font-weight: bold; }
         .search-btn:hover { background: #e6b800; }
         
-        /* Cart & Products Styling */
-        .product-card { background: #f9fbfd; border: 1px solid #e1e8ed; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: block; }
+        /* Products Cart UI */
+        .product-card { background: #f9fbfd; border: 1px solid #e1e8ed; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
         .prod-title { font-weight: bold; font-size: 15px; color: #111; }
         .prod-meta { font-size: 12px; color: #666; margin-top: 2px; }
         .prod-pricing { color: #004488; font-weight: bold; font-size: 14px; margin-top: 4px; }
         .cart-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
         .qty-box { display: flex; align-items: center; }
-        .qty-btn { width: 32px; height: 32px; background: #e1e8ed; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; display: inline-block; text-align: center; }
+        .qty-btn { width: 32px; height: 32px; background: #e1e8ed; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; text-align: center; }
         .qty-btn:hover { background: #cbd5e1; }
         .qty-val { width: 45px; text-align: center; font-weight: bold; border: none; background: transparent; font-size: 16px; }
         
@@ -43,8 +43,8 @@
         /* Whatsapp Selection */
         .wa-box { background: #f2fdf4; border: 1px solid #ccefd4; padding: 12px; border-radius: 8px; margin-top: 15px; }
         
-        /* Text Receipt Modal Box */
-        .receipt-box { background: #fff; border: 2px solid #333; padding: 15px; border-radius: 6px; font-family: monospace; white-space: pre-wrap; font-size: 12px; margin-top: 15px; background-color: #fefefe; }
+        /* Receipt Output Box */
+        .receipt-box { background: #fff; border: 2px solid #333; padding: 15px; border-radius: 6px; font-family: monospace; white-space: pre-wrap; font-size: 12px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -143,8 +143,8 @@
 </div>
 
 <script>
-    // ✅ AAP KA LIVE UPDATED SCRIPT URL FIT KAR DIYA HAI
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_BIi1oEiqpLNiH7y5-FA0cKDaBLRsa1D6XmVubl6yJF9LEHJNzLdfOQ71cJTGS0fG/exec";
+    // ✅ AAP KA NAYA LIVE WEB APP URL ENGINE YAHAN FIT HAI
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAlkuqtsAFsKkm6nFq1sQSaXOz5lQnOQ3-pQtcr3DcKcLh01F_Bux8ZUAe3SK9FVHz/exec";
 
     let globalProductsList = [];
     let globalUsersList = [];
@@ -162,7 +162,6 @@
         document.getElementById(boxId).classList.remove('hidden');
     }
 
-    // 1. FETCH INITIAL DATA FROM SHEET
     async function loadInitialAppData() {
         try {
             const resUsers = await fetch(APPS_SCRIPT_URL, {
@@ -189,11 +188,7 @@
             const dataApp = await resApp.json();
             if (dataApp.status === "success") {
                 globalProductsList = dataApp.products;
-                if(dataApp.promo) {
-                    document.getElementById('promoMarquee').innerText = dataApp.promo;
-                } else {
-                    document.getElementById('promoMarquee').innerText = "Islam & Co Distribution System Me Khush Amdeed!";
-                }
+                document.getElementById('promoMarquee').innerText = dataApp.promo || "Islam & Co Distribution System";
                 buildProductsCartUI();
             }
 
@@ -211,7 +206,6 @@
         }
     }
 
-    // 2. BUILD PRODUCTS CART UI WITH ADD/DELETE CONTROLS
     function buildProductsCartUI() {
         const container = document.getElementById('productsContainer');
         container.innerHTML = "";
@@ -247,7 +241,6 @@
         calculateLiveBill();
     }
 
-    // 3. LIVE BILL CALCULATION
     function calculateLiveBill() {
         let totalGross = 0;
         let totalDiscount = 0;
@@ -261,13 +254,11 @@
         });
         
         let netBill = totalGross - totalDiscount;
-        
         document.getElementById('grossBill').innerText = "Rs " + totalGross;
         document.getElementById('totDiscount').innerText = "Rs " + totalDiscount;
         document.getElementById('netBill').innerText = "Rs " + netBill;
     }
 
-    // 4. REGISTRATION SUBMIT
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const data = {
@@ -293,16 +284,14 @@
         }
     });
 
-    // 5. DROPDOWN LOGIN CHECK
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const selectedPhone = document.getElementById('loginUserSelect').value;
         const passEntered = document.getElementById('loginPassword').value;
-        
         const matchedUser = globalUsersList.find(u => u.phone === selectedPhone && u.password === passEntered);
         
         if (matchedUser) {
-            alert("Khush Amdeed! Login Kamyab 🎉");
+            alert("Login Kamyab 🎉");
             localStorage.setItem("userLoggedIn", "true");
             localStorage.setItem("bookerName", matchedUser.customerName);
             document.getElementById('currentBooker').innerText = matchedUser.customerName;
@@ -312,39 +301,34 @@
         }
     });
 
-    // 6. SEARCH SHOP DETAILS WITH MANUAL BACKUP IF NOT FOUND
     async function searchOutletData() {
         const idVal = document.getElementById('searchOutletId').value;
         if (!idVal) {
             alert("Meharbani kar ke pehle Outlet ID type karein!");
             return;
         }
-        
         try {
             const res = await fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "searchOutlet", outletId: idVal })
             });
             const result = await res.json();
-            
             if (result.found) {
                 document.getElementById('orderShopName').value = result.outletName;
                 document.getElementById('orderShopAddress').value = result.outletAddress;
                 document.getElementById('orderShopContact').value = result.contactNumber;
-                alert("Shop found in Master Data!");
+                alert("Shop found!");
             } else {
                 alert("Dukan nahi mili! Meharbani karke details khud manual enter karein.");
                 document.getElementById('orderShopName').value = "";
                 document.getElementById('orderShopAddress').value = "";
                 document.getElementById('orderShopContact').value = "";
-                document.getElementById('orderShopName').focus();
             }
         } catch(err) {
-            alert("Search failed or Connection Error. Aap manual details daal sakte hain.");
+            alert("Search Connection Error. Aap manual details daal sakte hain.");
         }
     }
 
-    // 7. TEXT RECEIPT GENERATION
     function getInvoiceTextStructure() {
         const outId = document.getElementById('searchOutletId').value || "Manual Entry";
         const outName = document.getElementById('orderShopName').value || "N/A";
@@ -376,18 +360,43 @@
         textInvoice += `Total Discount: ${document.getElementById('totDiscount').innerText}\n`;
         textInvoice += `NET PAYABLE BILL: ${document.getElementById('netBill').innerText}\n`;
         textInvoice += `===============================\n`;
-        textInvoice += `Thank you for choosing Islam & Co!`;
-        
         return textInvoice;
     }
 
     function generateHDReceiptText() {
         const outName = document.getElementById('orderShopName').value;
         if (!outName) {
-            alert("Pehle koshish karke koi order item select karein aur shop name daalyein.");
+            alert("Pehle koshish karke koi order item select karein.");
             return;
         }
-        const invoice = getInvoiceTextStructure();
-        document.getElementById('receiptText').innerText = invoice;
+        document.getElementById('receiptText').innerText = getInvoiceTextStructure();
         document.getElementById('receiptContainer').classList.remove('hidden');
-        alert("HD Text Invoice neeche generate ho chuki
+        alert("HD Text Invoice neeche taiyar hai!");
+    }
+
+    async function finalizeAndSubmitOrder() {
+        const outName = document.getElementById('orderShopName').value;
+        if (!outName) {
+            alert("Meharbani kar ke Shop ka naam likhein.");
+            return;
+        }
+
+        const confirmResult = confirm("Kya aap is order ko save karna aur WhatsApp par share karna chahte hain?");
+        if (!confirmResult) return; 
+
+        let itemsTextArr = [];
+        let hasItems = false;
+        globalProductsList.forEach((prod, index) => {
+            let qty = cartStorage[index];
+            if (qty > 0) {
+                hasItems = true;
+                itemsTextArr.push(`${prod.packName} (${qty})`);
+            }
+        });
+
+        if (!hasItems) {
+            alert("Aapka Cart khali hai! 🛒");
+            return;
+        }
+
+    
