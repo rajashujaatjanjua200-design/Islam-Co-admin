@@ -121,11 +121,15 @@
         </div>
 
         <div class="card">
-            <h3>4. Select Delivery Boy & Dispatch</h3>
-            <label>Choose WhatsApp Delivery Boy:</label>
+            <h3>4. Select Pepsi Order Taker & Dispatch</h3>
+            <label>Choose Pepsi Order Taker:</label>
             <select id="boyDropdown">
-                <option value="923001234561">Delivery Boy 1 (Asif)</option>
-                <option value="923001234562">Delivery Boy 2 (Zain)</option>
+                <option value="923465846781">Asiam Hussain (0346-5846781)</option>
+                <option value="923415011140">Adnan Hassan (0341-5011140)</option>
+                <option value="923061645603">Saqib Abbas (0306-1645603)</option>
+                <option value="923461649698">Arslan Sajid (0346-1649698)</option>
+                <option value="923150564149">Asim Raza (0315-0564149)</option>
+                <option value="923105714429">Naqeeb Ur Rehman (0310-5714429)</option>
             </select>
             <button class="btn-whatsapp" onclick="processOrder()">Complete Order & Share On WhatsApp 💬</button>
         </div>
@@ -155,7 +159,6 @@
     </div>
 
     <script>
-        // Aapka bilkul naya working URL yahan fit kar diya hai
         const webAppUrl = "https://script.google.com/macros/s/AKfycbxmj6MRu4HhjP_fLRLeQdOGOohASk_ORhGqNd7YaJXyjUKSXepeOCdBFZ5e_iRi6Xo2/exec";
 
         let ratesData = [];
@@ -374,8 +377,4 @@
 
             let netBill = gross - totalDisc;
             const invKey = "INV-" + Math.floor(100000 + Math.random() * 900000);
-            const timeStr = new Date().toLocaleString();
-
-            waString += `-------------------------\n*Gross Total:* Rs. ${gross}\n*Discount:* Rs. ${totalDisc}\n*Net Payable:* Rs. ${netBill}\n\n*Invoice Key:* ${invKey}`;
-
-            const orderUrl = `${webAppUrl}?action=sa    
+    
