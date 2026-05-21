@@ -3,400 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islam & Co - Online Order System</title>
+    <title>Islam & Co - Pepsi Online Order System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #f0f4f8; color: #333; padding: 15px; }
-        .header-box { background: #004488; color: white; text-align: center; padding: 20px 10px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .header-box h1 { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
-        .header-box p { font-size: 14px; opacity: 0.9; margin-top: 5px; }
-        marquee { background: #ffcc00; color: #000; padding: 6px; font-weight: bold; border-radius: 5px; margin-bottom: 15px; font-size: 14px; display: block; }
-        .container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 550px; margin: 0 auto; }
-        h2 { font-size: 18px; color: #004488; margin-bottom: 15px; border-left: 4px solid #ffcc00; padding-left: 8px; }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: #555; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; outline: none; background: #fafafa; }
-        input:focus, select:focus { border-color: #004488; background: #fff; }
-        button { width: 100%; padding: 12px; background: #004488; border: none; color: white; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; margin-top: 5px; }
-        button:hover { background: #002d5c; }
-        .toggle-link { text-align: center; margin-top: 12px; font-size: 13px; color: #004488; cursor: pointer; text-decoration: underline; }
-        .hidden { display: none; }
-        .search-btn { background: #ffcc00; color: #000; margin-top: 5px; font-weight: bold; }
-        .search-btn:hover { background: #e6b800; }
-        
-        /* Products Cart UI */
-        .product-card { background: #f9fbfd; border: 1px solid #e1e8ed; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
-        .prod-title { font-weight: bold; font-size: 15px; color: #111; }
-        .prod-meta { font-size: 12px; color: #666; margin-top: 2px; }
-        .prod-pricing { color: #004488; font-weight: bold; font-size: 14px; margin-top: 4px; }
-        .cart-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-        .qty-box { display: flex; align-items: center; }
-        .qty-btn { width: 32px; height: 32px; background: #e1e8ed; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; text-align: center; }
-        .qty-btn:hover { background: #cbd5e1; }
-        .qty-val { width: 45px; text-align: center; font-weight: bold; border: none; background: transparent; font-size: 16px; }
-        
-        /* Live Bill Dashboard */
-        .bill-dashboard { background: #e6f0fa; border: 1px solid #b3d1ff; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .bill-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
-        .bill-total { font-size: 18px; font-weight: bold; color: #d9534f; border-top: 1px dashed #b3d1ff; padding-top: 5px; margin-top: 5px; }
-        
-        /* Whatsapp Selection */
-        .wa-box { background: #f2fdf4; border: 1px solid #ccefd4; padding: 12px; border-radius: 8px; margin-top: 15px; }
-        
-        /* Receipt Output Box */
-        .receipt-box { background: #fff; border: 2px solid #333; padding: 15px; border-radius: 6px; font-family: monospace; white-space: pre-wrap; font-size: 12px; margin-top: 15px; }
+        :root {
+            --pepsi-blue: #004b87;
+            --dew-yellow: #ffc20e;
+            --sting-red: #dc3545;
+            --bg-gray: #f4f6f9;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin:0; padding:0; background: var(--bg-gray); color:#333; }
+        .header { background: var(--pepsi-blue); color:white; padding:15px; text-align:center; font-weight:bold; font-size:22px; letter-spacing: 1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .marquee-box { background: var(--dew-yellow); color: var(--pepsi-blue); padding:8px; font-weight:bold; font-size:14px; border-bottom: 2px solid var(--pepsi-blue); }
+        .page { display: none; padding:15px; max-width:480px; margin:20px auto; }
+        .card { background:white; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.08); margin-bottom:15px; border-top: 5px solid var(--pepsi-blue); }
+        h2, h3 { margin-top: 0; color: var(--pepsi-blue); }
+        label { font-weight: bold; display: block; margin-top: 12px; color: #555; }
+        input, select { width:100%; padding:14px; margin:8px 0; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; font-size:16px; background: #fdfdfd; }
+        input:focus, select:focus { border-color: var(--pepsi-blue); outline: none; background: #fff; }
+        button { width:100%; padding:14px; margin:12px 0; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; transition: all 0.2s ease; }
+        .btn-login { background: var(--pepsi-blue); color:white; }
+        .btn-login:hover { background: #003366; }
+        .btn-register { background: #28a745; color:white; }
+        .btn-register:hover { background: #218838; }
+        .btn-secondary { background:#6c757d; color: white; }
+        .btn-danger { background: var(--sting-red); color: white; }
+        .btn-whatsapp { background:#25D366; color: white; font-size: 18px; }
+        .cart-item { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:12px 0; }
+        .master-suggest { background:white; border:1px solid #ccc; max-height:150px; overflow-y:auto; border-radius:0 0 8px 8px; margin-top:-8px; position:absolute; width: calc(100% - 80px); max-width:400px; z-index:100; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .suggest-item { padding:10px; cursor:pointer; border-bottom:1px solid #f0f0f0; }
+        .suggest-item:hover { background: #e6f0fa; }
+        #invoice-download-area { background:white; padding:30px; border:2px solid #ddd; font-family: 'Courier New', Courier, monospace; color: #000; }
     </style>
 </head>
 <body>
 
-<div class="header-box">
-    <h1>Islam and Co</h1>
-    <p>Online Order System</p>
-</div>
+    <div class="header">ISLAM & CO DISTRIBUTION</div>
+    <div class="marquee-box"><marquee id="promoMarquee">Welcome to Islam & Co Distribution - Choa Saidan Shah</marquee></div>
 
-<marquee id="promoMarquee">Loading live promos from sheet... 🔥</marquee>
-
-<div class="container">
-    
-    <div id="loadingBlock" style="text-align: center; padding: 20px;">
-        <p style="font-weight: bold; color: #004488;">Sheet se live data connect ho raha hai, meharbani farma kar thora intezar karein... ⏳</p>
+    <div id="loginPage" class="page" style="display: block;">
+        <div class="card" style="text-align: center;">
+            <div style="font-size: 50px; margin-bottom: 10px;">🥤</div>
+            <h2>Portal Login</h2>
+            <p style="color:#777; margin-bottom:20px;">Islam & Co Order Booking System</p>
+            <input type="text" id="loginPhone" placeholder="Phone Number (e.g. 03001234567)">
+            <input type="password" id="loginPass" placeholder="Password">
+            <button class="btn-login" onclick="switchPage('registerPage')">Create New Account (Register)</button>
+            <button class="btn-secondary" style="margin-top: 5px;" onclick="handleLogin()">Login</button>
+        </div>
     </div>
 
-    <div id="loginBox" class="hidden">
-        <h2>Login Portal</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label>Select Your Name (Dropdown)</label>
-                <select id="loginUserSelect" required>
-                    <option value="">Apna Naam Select Karein</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" placeholder="Apna Password Dalein" required>
-            </div>
-            <button type="submit">Login Karein 👋</button>
-        </form>
-        <div class="toggle-link" onclick="switchScreen('registerBox')">Naya account banana hai? Register Karein</div>
-    </div>
-
-    <div id="registerBox" class="hidden">
-        <h2>Register New Account</h2>
-        <form id="registerForm">
-            <div class="form-group"><label>Customer Name</label><input type="text" id="regName" placeholder="Apna Poora Naam" required></div>
-            <div class="form-group"><label>Shop Name</label><input type="text" id="regShop" placeholder="Dukan Ka Naam" required></div>
-            <div class="form-group"><label>Phone Number</label><input type="tel" id="regPhone" placeholder="03001234567" required></div>
-            <div class="form-group"><label>Password</label><input type="password" id="regPass" placeholder="Password rakhein" required></div>
-            <div class="form-group"><label>City</label><input type="text" id="regCity" placeholder="Apne Sheher Ka Naam" required></div>
-            <div class="form-group"><label>Address</label><input type="text" id="regAddress" placeholder="Mukammal Pata" required></div>
-            <button type="submit">Registration Request Bheinjein 🚀</button>
-        </form>
-        <div class="toggle-link" onclick="switchScreen('loginBox')">Pehle se account hai? Login Karein</div>
-    </div>
-
-    <div id="orderBox" class="hidden">
-        <h2>Order Booking Setup 🔎</h2>
-        <p style="margin-bottom: 12px; color: #004488; font-weight: bold;">Current User/Booker: <span id="currentBooker"></span></p>
-        
-        <div style="background: #fdf6e2; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #f5e7c4;">
-            <div class="form-group">
-                <label>Search Outlet ID</label>
-                <input type="text" id="searchOutletId" placeholder="Outlet ID Likhein (e.g. 1000192339)">
-                <button type="button" class="search-btn" onclick="searchOutletData()">Search Shop 🔎</button>
-            </div>
+    <div id="registerPage" class="page" style="display: none;">
+        <div class="card">
+            <h2>New Account Registration</h2>
+            <p style="color:#666; font-size:14px;">Apni details darj karein. Admin ki approval ke baad aapka login chalay ga.</p>
             
-            <div class="form-group"><label>Outlet Name</label><input type="text" id="orderShopName" placeholder="Dukan Ka Naam Likhein" required></div>
-            <div class="form-group"><label>Outlet Address</label><input type="text" id="orderShopAddress" placeholder="Dukan Ka Pata"></div>
-            <div class="form-group"><label>Contact Number</label><input type="text" id="orderShopContact" placeholder="Phone Number"></div>
+            <label>Customer / Owner Name:</label>
+            <input type="text" id="regCustName" placeholder="Apna Poora Naam likhein">
+            
+            <label>Shop Name:</label>
+            <input type="text" id="regShopName" placeholder="Dukan ka Naam likhein">
+            
+            <label>Phone Number:</label>
+            <input type="text" id="regPhone" placeholder="Mobile Number (Login ID banega)">
+            
+            <label>Set Password:</label>
+            <input type="password" id="regPass" placeholder="Khufia Password rakhein">
+            
+            <label>City / Town:</label>
+            <input type="text" id="regCity" placeholder="e.g. Choa Saidan Shah" value="Choa Saidan Shah">
+            
+            <label>Full Address:</label>
+            <input type="text" id="regAddress" placeholder="Dukan ka mukammal pata">
+            
+            <button class="btn-register" onclick="handleRegister()">Submit Registration Request</button>
+            <button class="btn-secondary" onclick="switchPage('loginPage')">Back to Login</button>
+        </div>
+    </div>
+
+    <div id="mainPage" class="page" style="display: none;">
+        <div class="card" style="position: relative;">
+            <h3>1. Outlet & Booker Details</h3>
+            <label>Search Outlet ID (Master Data):</label>
+            <input type="text" id="searchOutlet" placeholder="Type ID to Search..." oninput="searchMasterData(this.value)">
+            <div id="masterDropdownList" class="master-suggest"></div>
+            
+            <label>Outlet Name:</label>
+            <input type="text" id="outletName" placeholder="Outlet Name">
+            
+            <label>Booker / Salesman Name:</label>
+            <input type="text" id="bookerName" placeholder="Order book karne wale ka naam">
         </div>
 
-        <h2>Add to Cart Products 🛒</h2>
-        <div id="productsContainer"></div>
-
-        <div class="bill-dashboard">
-            <div class="bill-row"><span>Total Items Gross Bill:</span><span id="grossBill">Rs 0</span></div>
-            <div class="bill-row" style="color: #28a745; font-weight: bold;"><span>Total Discount Allowed (-):</span><span id="totDiscount">Rs 0</span></div>
-            <div class="bill-total">Net Bill Amount: <span id="netBill">Rs 0</span></div>
-        </div>
-
-        <div class="wa-box">
-            <label style="color: #28a745;"><b>Select WhatsApp Delivery Line (Booker):</b></label>
-            <select id="waNumberSelect">
-                <option value="923001234561">Adnan Hassan</option>
-                <option value="923001234562">Asim Raza</option>
-                <option value="923001234563">Saqib Abbas</option>
-                <option value="923001234564">Naqeeb ur Rehman</option>
-                <option value="923001234565">Arslan Sajid</option>
+        <div class="card">
+            <h3>2. Select Pepsi Products</h3>
+            <label>Select Pack Size:</label>
+            <select id="sizeDropdown" onchange="onSizeSelect()">
+                <option value="">-- Choose Size --</option>
             </select>
+
+            <label>Select Pack Name:</label>
+            <select id="nameDropdown" onchange="onProductSelect()">
+                <option value="">-- Choose Product Brand --</option>
+            </select>
+
+            <div id="rateDisplay" style="font-size:18px; font-weight:bold; margin:15px 0; color: var(--pepsi-blue); background:#e6f0fa; padding:10px; border-radius:6px; text-align:center;">Rate: Rs. 0</div>
+            
+            <label>Enter Quantity (Cases/Pet):</label>
+            <input type="number" id="orderQty" min="1" placeholder="Qty">
+            <button class="btn-login" onclick="addToCart()">OK (Add to Cart 🛒)</button>
         </div>
 
-        <button type="button" onclick="finalizeAndSubmitOrder()" style="background: #28a745; margin-top: 15px; font-size: 16px;">Confirm Order & WhatsApp Share 📱</button>
-        <button type="button" onclick="generateHDReceiptText()" style="background: #17a2b8; margin-top: 10px;">Download HD Receipt Text 📄</button>
-        <button type="button" onclick="logoutSystem()" style="background: #dc3545; margin-top: 10px; padding: 8px;">Logout System ↩️</button>
+        <div class="card">
+            <h3>3. Live Bill & Order Review</h3>
+            <div id="liveCartItems" style="margin-bottom:15px;">Cart khali hai.</div>
+            <h3 style="text-align:right; border-top:2px dashed #ccc; padding-top:10px; color: var(--sting-red);">Sub Total: Rs. <span id="subTotalBill">0</span></h3>
+        </div>
 
-        <div id="receiptContainer" class="hidden">
-            <h3 style="margin-top:15px; font-size:14px;">📄 Generated HD Text Invoice:</h3>
-            <div id="receiptText" class="receipt-box"></div>
+        <div class="card">
+            <h3>4. Select Delivery Boy & Dispatch</h3>
+            <label>Choose WhatsApp Delivery Boy:</label>
+            <select id="boyDropdown">
+                <option value="923001234561">Delivery Boy 1 (Asif)</option>
+                <option value="923001234562">Delivery Boy 2 (Zain)</option>
+            </select>
+            <button class="btn-whatsapp" onclick="processOrder()">Complete Order & Share On WhatsApp 💬</button>
         </div>
     </div>
 
-</div>
+    <div id="invoicePage" class="page" style="display: none;">
+        <div id="invoice-download-area">
+            <div style="text-align:center; margin-bottom:20px;">
+                <h2 style="margin:5px 0; letter-spacing:1px;">ONLINE ORDER INVOICE</h2>
+                <h3 style="margin:5px 0; color:#333;">ISLAM & CO DISTRIBUTION</h3>
+                <p style="margin:2px 0; font-size:14px;">Choa Saidan Shah | Pepsi Logistics</p>
+            </div>
+            <p>==========================================</p>
+            <p><strong>Invoice Key:</strong> <span id="invKey"></span></p>
+            <p><strong>Date / Time:</strong> <span id="invTime"></span></p>
+            <p><strong>Outlet:</strong> <span id="invOutlet"></span></p>
+            <p><strong>Booker:</strong> <span id="invBooker"></span></p>
+            <p>==========================================</p>
+            <div id="invProducts" style="min-height:80px; line-height:1.6;"></div>
+            <p>==========================================</p>
+            <p style="text-align:right; margin:4px 0;">Gross Amount: Rs. <span id="invSub"></span></p>
+            <p style="text-align:right; margin:4px 0; color:green;">Discount: (-) Rs. <span id="invDisc"></span></p>
+            <h3 style="text-align:right; margin:10px 0; background:#eee; padding:8px;">Net Payable: Rs. <span id="invNet"></span></h3>
+        </div>
+        <button class="btn-login" onclick="downloadHDInvoice()">Download HD Bill Image 📸</button>
+        <button class="btn-secondary" onclick="resetSystem()">Book New Order</button>
+    </div>
 
-<script>
-    // ✅ AAP KA NAYA LIVE WEB APP URL ENGINE YAHAN FIT HAI
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAlkuqtsAFsKkm6nFq1sQSaXOz5lQnOQ3-pQtcr3DcKcLh01F_Bux8ZUAe3SK9FVHz/exec";
+    <script>
+        // Aapka bilkul naya working URL yahan fit kar diya hai
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbxmj6MRu4HhjP_fLRLeQdOGOohASk_ORhGqNd7YaJXyjUKSXepeOCdBFZ5e_iRi6Xo2/exec";
 
-    let globalProductsList = [];
-    let globalUsersList = [];
-    let cartStorage = {}; 
+        let ratesData = [];
+        let masterData = [];
+        let cart = {};
 
-    window.onload = function() {
-        loadInitialAppData();
-    };
-
-    function switchScreen(boxId) {
-        document.getElementById('loadingBlock').classList.add('hidden');
-        document.getElementById('loginBox').classList.add('hidden');
-        document.getElementById('registerBox').classList.add('hidden');
-        document.getElementById('orderBox').classList.add('hidden');
-        document.getElementById(boxId).classList.remove('hidden');
-    }
-
-    async function loadInitialAppData() {
-        try {
-            const resUsers = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "getUsersList" })
-            });
-            const dataUsers = await resUsers.json();
-            if (dataUsers.status === "success") {
-                globalUsersList = dataUsers.users;
-                const dropdown = document.getElementById('loginUserSelect');
-                dropdown.innerHTML = '<option value="">Apna Naam Select Karein</option>';
-                globalUsersList.forEach(u => {
-                    let opt = document.createElement('option');
-                    opt.value = u.phone;
-                    opt.innerText = u.customerName + " (" + u.shopName + ")";
-                    dropdown.appendChild(opt);
-                });
-            }
-
-            const resApp = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "getAppData" })
-            });
-            const dataApp = await resApp.json();
-            if (dataApp.status === "success") {
-                globalProductsList = dataApp.products;
-                document.getElementById('promoMarquee').innerText = dataApp.promo || "Islam & Co Distribution System";
-                buildProductsCartUI();
-            }
-
-            if (localStorage.getItem("userLoggedIn") === "true") {
-                document.getElementById('currentBooker').innerText = localStorage.getItem("bookerName");
-                switchScreen('orderBox');
-            } else {
-                switchScreen('loginBox');
-            }
-
-        } catch (err) {
-            console.error(err);
-            alert("Sheet se contact nahi ho saka. Connection error!");
-            switchScreen('loginBox');
-        }
-    }
-
-    function buildProductsCartUI() {
-        const container = document.getElementById('productsContainer');
-        container.innerHTML = "";
-        
-        globalProductsList.forEach((prod, index) => {
-            cartStorage[index] = 0; 
-            
-            let card = document.createElement('div');
-            card.className = "product-card";
-            card.innerHTML = `
-                <div class="prod-title">${prod.packName}</div>
-                <div class="prod-meta">Brand: ${prod.brand} | Disc: Rs ${prod.discount}</div>
-                <div class="prod-pricing">Rate: Rs ${prod.rate}</div>
-                <div class="cart-controls">
-                    <span style="font-size: 13px; color: #555; font-weight: 500;">Cart Qty:</span>
-                    <div class="qty-box">
-                        <button type="button" class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
-                        <input type="text" class="qty-val" id="qty_${index}" value="0" readonly>
-                        <button type="button" class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    function updateQty(index, change) {
-        let currentQty = cartStorage[index];
-        currentQty += change;
-        if (currentQty < 0) currentQty = 0;
-        cartStorage[index] = currentQty;
-        document.getElementById(`qty_${index}`).value = currentQty;
-        calculateLiveBill();
-    }
-
-    function calculateLiveBill() {
-        let totalGross = 0;
-        let totalDiscount = 0;
-        
-        globalProductsList.forEach((prod, index) => {
-            let qty = cartStorage[index];
-            if (qty > 0) {
-                totalGross += (prod.rate * qty);
-                totalDiscount += (prod.discount * qty);
-            }
-        });
-        
-        let netBill = totalGross - totalDiscount;
-        document.getElementById('grossBill').innerText = "Rs " + totalGross;
-        document.getElementById('totDiscount').innerText = "Rs " + totalDiscount;
-        document.getElementById('netBill').innerText = "Rs " + netBill;
-    }
-
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const data = {
-            action: "register",
-            customerName: document.getElementById('regName').value,
-            shopName: document.getElementById('regShop').value,
-            phone: document.getElementById('regPhone').value,
-            password: document.getElementById('regPass').value,
-            city: document.getElementById('regCity').value,
-            address: document.getElementById('regAddress').value
+        window.onload = function() {
+            try { loadPromo(); } catch(e) { console.log(e); }
+            try { loadRates(); } catch(e) { console.log(e); }
+            try { loadMasterData(); } catch(e) { console.log(e); }
         };
 
-        try {
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
-            const result = await res.json();
-            alert(result.message);
-            if(result.status === "success") {
-                document.getElementById('registerForm').reset();
-                switchScreen('loginBox');
+        function switchPage(pageId) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('invoicePage').style.display = 'none';
+            
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.style.display = 'block';
             }
-        } catch(err) {
-            alert("Error: Data process nahi ho saka.");
+            window.scrollTo(0,0);
         }
-    });
 
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const selectedPhone = document.getElementById('loginUserSelect').value;
-        const passEntered = document.getElementById('loginPassword').value;
-        const matchedUser = globalUsersList.find(u => u.phone === selectedPhone && u.password === passEntered);
-        
-        if (matchedUser) {
-            alert("Login Kamyab 🎉");
-            localStorage.setItem("userLoggedIn", "true");
-            localStorage.setItem("bookerName", matchedUser.customerName);
-            document.getElementById('currentBooker').innerText = matchedUser.customerName;
-            switchScreen('orderBox');
-        } else {
-            alert("Galt Password! Meharbani kar ke sahi details check karein.");
+        function loadPromo() {
+            fetch(webAppUrl + "?action=getPromo&_cb=" + Date.now())
+            .then(r => r.json())
+            .then(d => {
+                if(d && d.promoText) document.getElementById("promoMarquee").innerText = d.promoText;
+            })
+            .catch(e => console.log("Promo error"));
         }
-    });
 
-    async function searchOutletData() {
-        const idVal = document.getElementById('searchOutletId').value;
-        if (!idVal) {
-            alert("Meharbani kar ke pehle Outlet ID type karein!");
-            return;
-        }
-        try {
-            const res = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "searchOutlet", outletId: idVal })
+        function handleRegister() {
+            const customerName = document.getElementById("regCustName").value;
+            const shopName = document.getElementById("regShopName").value;
+            const phoneNumber = document.getElementById("regPhone").value;
+            const password = document.getElementById("regPass").value;
+            const city = document.getElementById("regCity").value;
+            const address = document.getElementById("regAddress").value;
+
+            if(!customerName || !shopName || !phoneNumber || !password) {
+                return alert("Meherbani kar ke Name, Shop, Phone aur Password lazmi likhein!");
+            }
+            
+            const registerUrl = `${webAppUrl}?action=register&customerName=${encodeURIComponent(customerName)}&shopName=${encodeURIComponent(shopName)}&phoneNumber=${encodeURIComponent(phoneNumber)}&password=${encodeURIComponent(password)}&city=${encodeURIComponent(city)}&address=${encodeURIComponent(address)}&_cb=${Date.now()}`;
+            
+            alert("Registration jama ho rahi hai...");
+            
+            fetch(registerUrl)
+            .then(r => r.json())
+            .then(d => {
+                alert("Zabardast! Request chali gai hai. Admin approval ke baad login chalay ga.");
+                switchPage('loginPage');
+            })
+            .catch(e => {
+                alert("Request submit ho gayi hai! Google Sheet check karein.");
+                switchPage('loginPage');
             });
-            const result = await res.json();
-            if (result.found) {
-                document.getElementById('orderShopName').value = result.outletName;
-                document.getElementById('orderShopAddress').value = result.outletAddress;
-                document.getElementById('orderShopContact').value = result.contactNumber;
-                alert("Shop found!");
-            } else {
-                alert("Dukan nahi mili! Meharbani karke details khud manual enter karein.");
-                document.getElementById('orderShopName').value = "";
-                document.getElementById('orderShopAddress').value = "";
-                document.getElementById('orderShopContact').value = "";
+        }
+
+        function handleLogin() {
+            const phone = document.getElementById("loginPhone").value;
+            const pass = document.getElementById("loginPass").value;
+            if(!phone || !pass) return alert("Phone number aur Password likhein!");
+
+            fetch(`${webAppUrl}?action=login&phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(pass)}&_cb=${Date.now()}`)
+            .then(r => r.json())
+            .then(d => {
+                if(d.status === "Approved") {
+                    alert("Login Kamyab! Khush-Aamdeed: " + d.name);
+                    switchPage('mainPage');
+                } else if(d.status === "Pending") {
+                    alert("Aap ka account abhi 'Pending' par hai. Raja Shujaat (Admin) se Rabta karein!");
+                } else {
+                    alert("Ghalat Phone number ya Password!");
+                }
+            })
+            .catch(e => alert("Internet ya Sheet connection check karein."));
+        }
+
+        function loadMasterData() {
+            fetch(webAppUrl + "?action=getMasterData&_cb=" + Date.now())
+            .then(r => r.json())
+            .then(d => masterData = d)
+            .catch(e => console.log("Master data error"));
+        }
+
+        function searchMasterData(val) {
+            document.getElementById("outletName").value = val; 
+            const listDiv = document.getElementById("masterDropdownList");
+            listDiv.innerHTML = "";
+            if(!val) return;
+            let matches = masterData.filter(m => m.OutletID && m.OutletID.toString().toLowerCase().includes(val.toLowerCase()));
+            matches.slice(0,5).forEach(m => {
+                let div = document.createElement("div");
+                div.className = "suggest-item";
+                div.innerText = `ID: ${m.OutletID} - ${m.OutletName}`;
+                div.onclick = function() {
+                    document.getElementById("searchOutlet").value = m.OutletID;
+                    document.getElementById("outletName").value = m.OutletName;
+                    if(m.BookerName) document.getElementById("bookerName").value = m.BookerName;
+                    listDiv.innerHTML = "";
+                };
+                listDiv.appendChild(div);
+            });
+        }
+
+        function loadRates() {
+            fetch(webAppUrl + "?action=getRates&_cb=" + Date.now())
+            .then(r => r.json())
+            .then(d => {
+                ratesData = d;
+                const sizeSel = document.getElementById("sizeDropdown");
+                sizeSel.innerHTML = '<option value="">-- Choose Size --</option>';
+                const uniqueSizes = [...new Set(d.map(item => item.PackSize))].filter(Boolean);
+                uniqueSizes.forEach(size => {
+                    sizeSel.innerHTML += `<option value="${size}">${size}</option>`;
+                });
+            })
+            .catch(e => console.log("Rates error"));
+        }
+
+        function onSizeSelect() {
+            const selectedSize = document.getElementById("sizeDropdown").value;
+            const nameSel = document.getElementById("nameDropdown");
+            nameSel.innerHTML = '<option value="">-- Choose Product --</option>';
+            document.getElementById("rateDisplay").innerText = "Rate: Rs. 0";
+            
+            const filtered = ratesData.filter(item => item.PackSize === selectedSize);
+            filtered.forEach(p => {
+                nameSel.innerHTML += `<option value="${p.PackName}">${p.PackName} [${p.Brand}]</option>`;
+            });
+        }
+
+        function onProductSelect() {
+            const size = document.getElementById("sizeDropdown").value;
+            const name = document.getElementById("nameDropdown").value;
+            const matched = ratesData.find(item => item.PackSize === size && item.PackName === name);
+            if(matched) {
+                document.getElementById("rateDisplay").innerText = `Rate: Rs. ${matched.Rate}`;
+                document.getElementById("rateDisplay").setAttribute("data-rate", matched.Rate);
+                document.getElementById("rateDisplay").setAttribute("data-disc", matched.Discount || 0);
             }
-        } catch(err) {
-            alert("Search Connection Error. Aap manual details daal sakte hain.");
         }
-    }
 
-    function getInvoiceTextStructure() {
-        const outId = document.getElementById('searchOutletId').value || "Manual Entry";
-        const outName = document.getElementById('orderShopName').value || "N/A";
-        const outAddr = document.getElementById('orderShopAddress').value || "N/A";
-        const outContact = document.getElementById('orderShopContact').value || "N/A";
-        const currentBooker = localStorage.getItem("bookerName") || "N/A";
+        function addToCart() {
+            const size = document.getElementById("sizeDropdown").value;
+            const name = document.getElementById("nameDropdown").value;
+            const qty = parseInt(document.getElementById("orderQty").value);
+            const rate = parseFloat(document.getElementById("rateDisplay").getAttribute("data-rate"));
+            const disc = parseFloat(document.getElementById("rateDisplay").getAttribute("data-disc"));
 
-        let textInvoice = `===============================\n`;
-        textInvoice += `       ISLAM & CO DISTRIBUTION \n`;
-        textInvoice += `         ONLINE ORDER RECEIPT   \n`;
-        textInvoice += `===============================\n`;
-        textInvoice += `Booker: ${currentBooker}\n`;
-        textInvoice += `Shop Name: ${outName}\n`;
-        textInvoice += `Outlet ID: ${outId}\n`;
-        textInvoice += `Address: ${outAddr}\n`;
-        textInvoice += `Contact: ${outContact}\n`;
-        textInvoice += `-------------------------------\n`;
-        textInvoice += `ITEMS ORDERED:\n`;
+            if(!size || !name || !qty || qty <= 0) return alert("Product aur Quantity sahi se darj karein!");
 
-        globalProductsList.forEach((prod, index) => {
-            let qty = cartStorage[index];
-            if (qty > 0) {
-                textInvoice += `- ${prod.packName}\n  Qty: ${qty} | Rate: Rs ${prod.rate}\n`;
+            cart[name] = { size: size, qty: qty, rate: rate, discount: disc };
+            document.getElementById("orderQty").value = "";
+            updateLiveCartUI();
+        }
+
+        function removeFromCart(key) {
+            delete cart[key];
+            updateLiveCartUI();
+        }
+
+        function updateLiveCartUI() {
+            const container = document.getElementById("liveCartItems");
+            const totalDisplay = document.getElementById("subTotalBill");
+            container.innerHTML = "";
+            let subTotal = 0;
+
+            if(Object.keys(cart).length === 0) {
+                container.innerHTML = "Cart khali hai.";
+                totalDisplay.innerText = 0;
+                return;
             }
-        });
 
-        textInvoice += `-------------------------------\n`;
-        textInvoice += `Gross Total: ${document.getElementById('grossBill').innerText}\n`;
-        textInvoice += `Total Discount: ${document.getElementById('totDiscount').innerText}\n`;
-        textInvoice += `NET PAYABLE BILL: ${document.getElementById('netBill').innerText}\n`;
-        textInvoice += `===============================\n`;
-        return textInvoice;
-    }
-
-    function generateHDReceiptText() {
-        const outName = document.getElementById('orderShopName').value;
-        if (!outName) {
-            alert("Pehle koshish karke koi order item select karein.");
-            return;
-        }
-        document.getElementById('receiptText').innerText = getInvoiceTextStructure();
-        document.getElementById('receiptContainer').classList.remove('hidden');
-        alert("HD Text Invoice neeche taiyar hai!");
-    }
-
-    async function finalizeAndSubmitOrder() {
-        const outName = document.getElementById('orderShopName').value;
-        if (!outName) {
-            alert("Meharbani kar ke Shop ka naam likhein.");
-            return;
-        }
-
-        const confirmResult = confirm("Kya aap is order ko save karna aur WhatsApp par share karna chahte hain?");
-        if (!confirmResult) return; 
-
-        let itemsTextArr = [];
-        let hasItems = false;
-        globalProductsList.forEach((prod, index) => {
-            let qty = cartStorage[index];
-            if (qty > 0) {
-                hasItems = true;
-                itemsTextArr.push(`${prod.packName} (${qty})`);
+            for(let key in cart) {
+                let rowTotal = cart[key].rate * cart[key].qty;
+                subTotal += rowTotal;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div><strong>${key}</strong> (${cart[key].size})<br>Qty: ${cart[key].qty} x Rs.${cart[key].rate}</div>
+                        <div>Rs. ${rowTotal} <button class="btn-danger" style="width:auto; padding:5px 10px; margin:0 0 0 10px; display:inline;" onclick="removeFromCart('${key}')">X</button></div>
+                    </div>
+                `;
             }
-        });
-
-        if (!hasItems) {
-            alert("Aapka Cart khali hai! 🛒");
-            return;
+            totalDisplay.innerText = subTotal;
         }
 
-    
+        function processOrder() {
+            const outId = document.getElementById("searchOutlet").value || "Manual";
+            const outName = document.getElementById("outletName").value;
+            const bName = document.getElementById("bookerName").value;
+            const boyNumber = document.getElementById("boyDropdown").value;
+
+            if(!outName || !bName) return alert("Outlet Name aur Booker Name likhna zaroori hai!");
+            if(Object.keys(cart).length === 0) return alert("Order book karne ke liye cart me item shamil karein!");
+
+            let prodStrings = [];
+            let waString = `*ISLAM & CO DISTRIBUTION*\n*ONLINE ORDER INVOICE*\n\n*Booker:* ${bName}\n*Outlet:* ${outName} (${outId})\n-------------------------\n`;
+            
+            let gross = 0;
+            let totalDisc = 0;
+
+            for(let key in cart) {
+                let rTotal = cart[key].rate * cart[key].qty;
+                let rDisc = cart[key].discount * cart[key].qty;
+                gross += rTotal;
+                totalDisc += rDisc;
+
+                prodStrings.push(`${key} (${cart[key].qty})`);
+                waString += `• ${key} x ${cart[key].qty} = Rs. ${rTotal}\n`;
+            }
+
+            let netBill = gross - totalDisc;
+            const invKey = "INV-" + Math.floor(100000 + Math.random() * 900000);
+            const timeStr = new Date().toLocaleString();
+
+            waString += `-------------------------\n*Gross Total:* Rs. ${gross}\n*Discount:* Rs. ${totalDisc}\n*Net Payable:* Rs. ${netBill}\n\n*Invoice Key:* ${invKey}`;
+
+            const orderUrl = `${webAppUrl}?action=sa    
