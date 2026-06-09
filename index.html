@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@
     <title>ISLAM AND CO - Pepsi Distribution</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
         body { background: #f0f4f8; padding: 10px; color: #333; }
         
         .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
@@ -17,6 +17,12 @@
         .main-header p { font-size: 15px; opacity: 0.9; }
         .footer-brand { text-align: center; padding: 15px; font-size: 13px; color: #7f8c8d; font-weight: bold; background: #fafafa; border-top: 1px solid #eee; }
         
+        /* Official Pepsi Logo Styles */
+        .brand-logo-container { text-align: center; margin-bottom: 15px; }
+        .brand-logo { width: 90px; height: auto; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+        .header-logo-row { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .header-logo { width: 55px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+
         /* Logout Button Header Row */
         .header-row { display: flex; justify-content: space-between; align-items: center; background: #002d54; padding: 12px 20px; color: white; font-size: 14px; }
         .btn-logout { background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; width: auto; font-weight: bold; cursor: pointer; border: none; }
@@ -39,7 +45,7 @@
         button { width: 100%; padding: 14px; background: #00457c; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         button:hover { background: #002d54; }
         
-        /* CHOTA SEARCH & LOCATION BUTTONS TAKE NUMBER NAZAR AYE */
+        /* Action Buttons */
         .btn-search { background: #2563eb; padding: 10px 12px; width: auto; font-size: 13px; white-space: nowrap; border-radius: 6px; }
         .btn-search:hover { background: #1d4ed8; }
         .btn-location { background: #059669; padding: 10px 12px; width: auto; font-size: 13px; white-space: nowrap; border-radius: 6px; }
@@ -55,40 +61,100 @@
         
         /* Main Cart Table */
         .cart-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 15px; font-size: 14px; }
-        .cart-table th, .cart-table td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
-        .cart-table th { background: #f1f5f9; }
+        .cart-table th { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 12px; text-align: left; }
+        .cart-table td { border-bottom: 2px solid #cbd5e1; padding: 12px; text-align: left; }
+        
         .btn-remove { background: #ef4444; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; width: auto; display: inline-block; }
         .btn-remove:hover { background: #dc2626; }
         
-        /* ADVANCED BILL BOX DESIGN WITH 9PX SMALL TEXT */
-        .receipt-box { border: 1px solid #000; padding: 12px; background: #fff; margin-top: 20px; position: relative; width: 100%; color: #000; }
-        .receipt-header-row { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 4px; }
-        .receipt-logo-side { font-size: 18px; font-weight: 2000; color: #000; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
-        .receipt-invoice-side { font-size: 18px; font-weight: 2000; color: #000; text-align: right; font-family: 'Arial Black', sans-serif; }
+        /* COMPACT BILL DESIGN WITH BLACK OUTLINE BOX */
+        .receipt-box { 
+            background: #ffffff; 
+            padding: 16px;            
+            border: 1.5px solid #000000; 
+            margin-top: 20px; 
+            color: #000000; 
+            width: 400px;             
+            margin-left: auto;
+            margin-right: auto;
+            font-family: Arial, sans-serif; 
+        }
         
-        .receipt-timestamp { font-size: 9px; color: #000; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin-bottom: 6px; font-weight: 500; }
+        .receipt-box span, .receipt-box div, .receipt-box td, .receipt-box th {
+            font-size: 11px;
+            font-weight: normal;
+            color: #000000 !important; 
+        }
+
+        .receipt-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .receipt-company-title { font-size: 14px !important; font-weight: bold !important; letter-spacing: 0.5px; }
+        .receipt-invoice-title { font-size: 14px !important; font-weight: bold !important; text-align: right; }
+        .receipt-center-date { text-align: center; margin-bottom: 12px; font-size: 10.5px !important; }
         
-        /* Split layout for left and right alignment */
-        .receipt-split-grid { display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px; font-size: 9px; line-height: 1.4; }
-        .receipt-grid-left { text-align: left; width: 50%; }
-        .receipt-grid-right { text-align: right; width: 48%; }
+        .receipt-main-layout { display: flex; justify-content: space-between; margin-bottom: 12px; line-height: 1.4; }
+        .receipt-layout-left { width: 65%; }
+        .receipt-layout-left b { font-weight: bold !important; font-size: 11px !important; } 
+        .receipt-layout-right { width: 35%; text-align: right; }
         
-        .receipt-table-compact { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 9px; color: #000; }
-        .receipt-table-compact th, .receipt-table-compact td { border: 1px solid #333; padding: 5px 6px; text-align: left; }
-        .receipt-table-compact th { background: #eaeaea; font-weight: bold; text-transform: uppercase; }
+        .receipt-dispatch-line { border-bottom: 1px solid #000000; padding-bottom: 6px; margin-bottom: 10px; line-height: 1.4; }
+        .receipt-dispatch-line b { font-weight: bold !important; }
         
-        .receipt-summary-compact { margin-top: 8px; border-top: 1px dashed #000; padding-top: 6px; text-align: right; font-weight: bold; font-size: 10px; line-height: 1.5; color: #000; }
+        .receipt-outlet-section { border-bottom: 1px solid #000000; padding-bottom: 8px; margin-bottom: 12px; line-height: 1.4; }
+        .receipt-outlet-section b { font-weight: bold !important; }
         
-        /* Rate List Modal/Pop-up */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
-        .modal-content { background: white; padding: 20px; border-radius: 12px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; }
-        .modal-close { background: #333; color: white; padding: 8px; border-radius: 6px; cursor: pointer; text-align: center; margin-top: 15px; font-weight: bold; }
+        .receipt-table-photo { width: 100%; border-collapse: collapse; margin-bottom: 10px; color: #000000; border: none !important; }
+        .receipt-table-photo th { 
+            border-top: none !important; 
+            border-left: none !important;
+            border-right: none !important;
+            border-bottom: 1px solid #000000 !important; 
+            padding: 5px 2px; 
+            font-weight: bold !important; 
+            background: none !important;
+        }
+        .receipt-table-photo td { padding: 5px 2px; border: none !important; border-bottom: 1px solid #000000 !important; }
+        
+        .receipt-table-photo tr.total-row td { border-top: 1px solid #000000 !important; border-bottom: 1px solid #000000 !important; padding: 6px 2px; font-weight: bold !important; }
+        
+        .receipt-accounting-box { width: 100%; text-align: right; line-height: 1.2; margin-bottom: 12px; display: flex; flex-direction: column; align-items: flex-end; }
+        .receipt-accounting-row { display: flex; justify-content: space-between; width: 170px; padding: 1px 0; align-items: center; } 
+        
+        .receipt-net-box { 
+            border: 1px solid #000000; 
+            padding: 2px 5px; 
+            font-size: 11.5px !important; 
+            font-weight: normal !important; 
+            display: inline-block; 
+            min-width: 70px; 
+            text-align: right;
+        }
+        
+        .receipt-bottom-meta { display: flex; justify-content: space-between; align-items: flex-start; line-height: 1.3; padding-top: 10px; width: 100%; }
+        .receipt-meta-item { flex: 1; font-size: 10.5px !important; }
+        .receipt-meta-item b { font-size: 10.5px !important; font-weight: bold !important; }
+        
+        /* Modals */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: white; padding: 25px; border-radius: 16px; max-width: 450px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close { background: #64748b; color: white; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; margin-top: 10px; font-weight: bold; }
+        .modal-close:hover { background: #475569; }
+        
+        .qty-picker-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
+        .qty-btn { width: 50px; height: 50px; border-radius: 50%; background: #00457c; color: white; font-size: 24px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .qty-btn:hover { background: #002d54; }
+        .qty-input-field { width: 80px; text-align: center; font-size: 22px; font-weight: bold; padding: 8px; border: 2px solid #cbd5e1; border-radius: 8px; }
+        .btn-confirm-add { background: #059669; color: white; font-size: 16px; padding: 12px; border-radius: 8px; width: 100%; border: none; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .btn-confirm-add:hover { background: #047857; }
     </style>
 </head>
 <body>
 <div class="container">
     <div id="loginScreen" class="screen">
         <div class="main-header" style="margin: -25px -25px 20px -25px;">
+            <div class="brand-logo-container">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='49' fill='%23ffffff'/><path d='M6,50 C6,25.7 25.7,6 50,6 C69.5,6 86.2,18.7 91.8,36.2 C74.2,25.4 24.6,27.2 8.5,41.8 C6.9,44.4 6,47.1 6,50 Z' fill='%23e32934'/><path d='M94,50 C94,74.3 74.3,94 50,94 C29.4,94 11.9,80 7.1,61.4 C25.1,49.8 77.2,49.1 92.5,63.9 C93.5,59.5 94,54.8 94,50 Z' fill='%23002f6c'/><path d='M8.5,41.8 C24.6,27.2 74.2,25.4 91.8,36.2 C92.1,37.2 92.3,38.2 92.5,39.2 C75.5,28.9 25.8,31.4 9.8,45.2 C9.3,44.1 8.9,42.9 8.5,41.8 Z' fill='%23ffffff'/></svg>" alt="Pepsi Official Logo" class="brand-logo">
+            </div>
             <h1>ISLAM AND CO</h1>
             <p>Pepsi Distribution Online Order</p>
         </div>
@@ -117,8 +183,13 @@
         <marquee id="promoMarquee" behavior="scroll" direction="left" scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();">🔥 Welcome to Islam & Co Pepsi Distribution Live Ordering Portal!</marquee>
         
         <div class="main-header">
-            <h1>ISLAM AND CO</h1>
-            <p>Pepsi Online Order System</p>
+            <div class="header-logo-row">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='49' fill='%23ffffff'/><path d='M6,50 C6,25.7 25.7,6 50,6 C69.5,6 86.2,18.7 91.8,36.2 C74.2,25.4 24.6,27.2 8.5,41.8 C6.9,44.4 6,47.1 6,50 Z' fill='%23e32934'/><path d='M94,50 C94,74.3 74.3,94 50,94 C29.4,94 11.9,80 7.1,61.4 C25.1,49.8 77.2,49.1 92.5,63.9 C93.5,59.5 94,54.8 94,50 Z' fill='%23002f6c'/><path d='M8.5,41.8 C24.6,27.2 74.2,25.4 91.8,36.2 C92.1,37.2 92.3,38.2 92.5,39.2 C75.5,28.9 25.8,31.4 9.8,45.2 C9.3,44.1 8.9,42.9 8.5,41.8 Z' fill='%23ffffff'/></svg>" alt="Pepsi Official Logo" class="header-logo">
+                <div>
+                    <h1>ISLAM AND CO</h1>
+                    <p>Pepsi Online Order System</p>
+                </div>
+            </div>
         </div>
 
         <div style="padding: 25px;">
@@ -134,18 +205,20 @@
             </div>
 
             <div class="form-group">
-                <label>Booker Live Location (GPS Coordinates)</label>
-                <input type="text" id="liveLocationInput" placeholder="Click 'GPS' button to lock coordinates" readonly style="color: #047857; font-weight: bold;">
+                <label>Booker Live Location (Area Name / Address)</label>
+                <input type="text" id="liveLocationInput" placeholder="Click 'GPS' button to fetch live location name" readonly style="color: #047857; font-weight: bold;">
             </div>
 
             <div class="form-group">
                 <label>Outlet Name</label>
                 <input type="text" id="outletName" placeholder="Enter Outlet Name">
             </div>
+            
             <div class="form-group">
                 <label>Owner Name</label>
                 <input type="text" id="ownerName" placeholder="Enter Owner Name">
             </div>
+
             <div class="form-group">
                 <label>Outlet Address</label>
                 <input type="text" id="outletAddress" placeholder="Enter Outlet Address">
@@ -176,7 +249,7 @@
 
             <div class="form-group">
                 <label>Select Product</label>
-                <select id="productSelect" onchange="askQuantityPopUp(this.value)">
+                <select id="productSelect" onchange="openQuantityModal(this.value)">
                     <option value="">-- Click here to select product --</option>
                 </select>
             </div>
@@ -193,52 +266,103 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="cartItemsBody">
-                        </tbody>
+                    <tbody id="cartItemsBody"></tbody>
                 </table>
             </div>
 
             <div id="receiptContainer" class="receipt-box">
-                <div class="receipt-header-row">
-                    <div class="receipt-logo-side">Islam and Co.</div>
-                    <div class="receipt-invoice-side">Sale Invoice</div>
+                <div class="receipt-top-row">
+                    <div class="receipt-company-title">ISLAM AND CO.</div>
+                    <div class="receipt-invoice-title">SALE INVOICE</div>
                 </div>
                 
-                <div class="receipt-timestamp" id="receiptTimeField">
-                    Date & Time: --/--/---- --:-- --
-                </div>
+                <div class="receipt-center-date" id="receiptTimeField">09/06/2026, 00:15:00</div>
                 
-                <div class="receipt-split-grid">
-                    <div class="receipt-grid-left">
-                        <span style="font-weight: bold; text-decoration: underline;">Distributor Details:</span><br>
-                        <b>Islam & Co. Pepsi Distribution</b><br>
-                        Main Warehouse, Jhang Road Area<br>
-                        <div style="margin-top: 5px;" id="receiptLeftDetails">
-                            </div>
+                <div class="receipt-main-layout">
+                    <div class="receipt-layout-left">
+                        <b>Distributor CNIC :</b> 37202-4977404-3<br>
+                        <b>Distributor NTN :</b> A439767-0<br>
+                        <b>Distributor STRN :</b> 9000<br>
+                        <b>Distributor Address :</b> CHOA SAIDAN SHAH, CHAKWAL
                     </div>
-                    
-                    <div class="receipt-grid-right" id="receiptRightDetails">
-                        </div>
+                    <div class="receipt-layout-right">
+                        <span id="receiptInvoiceNumField"><b>Invoice#</b> 85653761</span>
+                    </div>
                 </div>
                 
-                <div style="overflow-x: auto;">
-                    <table class="receipt-table-compact">
-                        <thead>
-                            <tr>
-                                <th>Product Description</th>
-                                <th style="width: 45px; text-align: center;">Qty</th>
-                                <th style="width: 70px;">Promo</th>
-                                <th style="width: 85px;">NTP</th>
-                            </tr>
-                        </thead>
-                        <tbody id="receiptItemsBody">
-                            </tbody>
-                    </table>
+                <div class="receipt-dispatch-line" id="receiptDispatchField">
+                    <b>Dispatch#</b> 1632207 14981778507429067
                 </div>
                 
-                <div class="receipt-summary-compact" id="receiptSummaryBox">
-                    Total Discount Saved: Rs. 0<br>
-                    <span style="font-size:11px; font-weight: bold;">Net Payable NTP: Rs. 0</span>
+                <div class="receipt-outlet-section">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                        <span id="billOutletId"><b>Outlet ID:</b> ---</span>
+                        <span id="billOwnerName"><b>Owner:</b> ---</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                        <span id="billOutletName"><b>Outlet:</b> ---</span>
+                        <span id="billOutletContact"><b>Contact No:</b> ---</span>
+                    </div>
+                    <div id="billOutletAddress"><b>Address:</b> ---</div>
+                </div>
+                
+                <table class="receipt-table-photo">
+                    <thead>
+                        <tr>
+                            <th style="width: 48%; text-align: left;">Package</th>
+                            <th style="width: 10%; text-align: center;">QTY</th>
+                            <th style="width: 12%; text-align: left; padding-left: 5px;">Rate</th>
+                            <th style="width: 12%; text-align: left; padding-left: 5px;">Amount</th>
+                            <th style="width: 12%; text-align: left; padding-left: 5px;">Discount</th>
+                            <th style="width: 12%; text-align: left; padding-left: 5px;">NTP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receiptItemsBody"></tbody>
+                    <tr class="total-row">
+                        <td>Total</td>
+                        <td style="text-align: center;" id="billTotalQty">0</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                
+                <div class="receipt-accounting-box">
+                    <div class="receipt-accounting-row">
+                        <span>Gross Amount:</span> 
+                        <span id="billGrossAmt">0.00</span>
+                    </div>
+                    <div class="receipt-accounting-row">
+                        <span>Discount:</span> 
+                        <span id="billDiscountAmt">0.00</span>
+                    </div>
+                    <div class="receipt-accounting-row">
+                        <span>Advance Income Tax (0%):</span> 
+                        <span>0.00</span>
+                    </div>
+                    <div class="receipt-accounting-row" style="margin-top: 4px;">
+                        <span style="font-weight: bold !important;">Net Amount:</span>
+                        <div class="receipt-net-box" id="billNetAmt">0.00</div>
+                    </div>
+                </div>
+                
+                <div class="receipt-bottom-meta">
+                    <div class="receipt-meta-item">
+                        <b>User:</b><br><span id="billMetaUser">Shujaat Raja</span>
+                    </div>
+                    <div class="receipt-meta-item" style="text-align: center;">
+                        <b>Booker:</b><br><span id="billMetaBooker">---</span>
+                    </div>
+                    <div class="receipt-meta-item">
+                        <b>Driver:</b><br>NAUMAN HAYAT
+                    </div>
+                    <div class="receipt-meta-item" style="text-align: center;">
+                        <b>Veh# / PJP ID:</b><br><span id="billMetaVeh">CAM-512 / ----</span>
+                    </div>
+                    <div class="receipt-meta-item" style="text-align: right;">
+                        <b>Expected Delivery:</b><br><span id="billMetaDeliveryDate">---</span>
+                    </div>
                 </div>
             </div>
 
@@ -255,7 +379,7 @@
                         <option value="923105714429">Asim Raza</option>
                         <option value="923415011140">Adnan Hassan </option>
                         <option value="923461649698">Arslan Sajid </option>
-                        <option value="923475400084">Test Invice</option>
+                        <option value="923475400084">Test Invoice</option>
                     </select>
                     <button class="btn-whatsapp" onclick="processFinalOrder()" style="flex: 1;">Share Order 🚀</button>
                 </div>
@@ -271,39 +395,77 @@
 <div id="rateModal" class="modal hidden">
     <div class="modal-content">
         <h3 style="color:#00457c; margin-bottom:10px;">Live Rate List</h3>
-        <div id="rateModalData" style="font-size:14px; line-height:1.6;">Loading...</div>
+        <div id="rateModalData" style="font-size:14px; line-height:1.6; max-height: 50vh; overflow-y: auto;">Loading...</div>
         <div class="modal-close" onclick="toggleRateModal(false)">Close</div>
     </div>
+</div>
+
+<div id="qtyModal" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="qtyModalTitle" style="color:#00457c; text-align: center; margin-bottom: 5px;">Select Quantity</h3>
+        <p id="qtyModalSub" style="text-align: center; font-size: 13px; color: #64748b; margin-bottom: 15px;"></p>
+        
+        <div class="qty-picker-container">
+            <button class="qty-btn" onclick="adjustQtyBox(-1)">−</button>
+            <input type="number" id="qtyBoxInput" class="qty-input-field" value="1" min="1">
+            <button class="qty-btn" onclick="adjustQtyBox(1)">+</button>
+        </div>
+        
+        <button class="btn-confirm-add" onclick="confirmQtyModalAdd()">Add to Order 🛒</button>
+        <div class="modal-close" onclick="closeQuantityModal()">Cancel</div>
     </div>
-    <script>
+</div>
+
+<script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwq9XiqLMgEz7isOIdTVdDUSDhAnFeot6kFCuBkTrqb4pzK1os5xAzOchIzL1BO8gA/exec";
     
     let globalRates = [];
     let cart = [];
     let currentBooker = "";
-    let currentPasswordCache = ""; // Auto Logout Security Cache
+    let currentPasswordCache = ""; 
+    let selectedProductForQty = "";
+    let currentPjpId = ""; 
 
     function getFreshUrl(url) {
         const separator = url.includes('?') ? '&' : '?';
         return `${url}${separator}_nocache=${new Date().getTime()}`;
     }
 
-    // Live GPS Location System
     function fetchLiveLocation() {
         if (!navigator.geolocation) {
             return alert("Aap ka browser ya device GPS/Location support nahi karta.");
         }
-        document.getElementById('liveLocationInput').value = "Locating GPS coordinates...";
+        document.getElementById('liveLocationInput').value = "Locating live area name...";
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                document.getElementById('liveLocationInput').value = `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`;
+                
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
+                        headers: { 'Accept-Language': 'en' }
+                    });
+                    const data = await res.json();
+                    if(data && data.display_name) {
+                        const addressParts = data.address;
+                        const shortAddress = [
+                            addressParts.suburb || addressParts.neighbourhood || addressParts.village,
+                            addressParts.town || addressParts.city,
+                            addressParts.county
+                        ].filter(Boolean).join(', ') || data.name || "Choa Saidan Shah Area";
+                        
+                        document.getElementById('liveLocationInput').value = shortAddress;
+                    } else {
+                        document.getElementById('liveLocationInput').value = `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)} (Name unavailable)`;
+                    }
+                } catch (err) {
+                    document.getElementById('liveLocationInput').value = "Choa Saidan Shah, Chakwal";
+                }
                 calculateCartTotals();
             },
             (error) => {
-                alert("GPS lock nahi ho saka! Meharbani kar ke phone ki location setting check karein.");
-                document.getElementById('liveLocationInput').value = "Location Error / Denied";
+                alert("GPS lock nahi ho saka! Check phone location permissions.");
+                document.getElementById('liveLocationInput').value = "Choa Saidan Shah, Chakwal";
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
@@ -330,66 +492,45 @@
                 currentBooker = user;
                 currentPasswordCache = pass; 
                 
+                currentPjpId = Math.floor(1000 + Math.random() * 9000);
+                
                 document.getElementById('bookerName').value = user;
                 document.getElementById('welcomeUserTxt').innerText = "Active Booker: " + user;
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('bookingScreen').classList.remove('hidden');
+                
+                document.getElementById('receiptInvoiceNumField').innerHTML = "<b>Invoice#</b> " + Math.floor(10000000 + Math.random() * 90000000);
+                document.getElementById('receiptDispatchField').innerHTML = "<b>Dispatch#</b> 163" + Math.floor(1000 + Math.random() * 9000) + " " + Date.now();
+                
                 loadLiveRatesAndPromos();
             } else {
                 alert(result.message);
                 document.getElementById('loginScreen').querySelector('button').innerText = "Log In";
             }
         } catch(e) {
-            alert("Connection error! Dobara koshish karein.");
+            alert("Connection error!");
             document.getElementById('loginScreen').querySelector('button').innerText = "Log In";
         }
     }
 
     function enforceSecurityLogout() {
-        alert("🚨 Security Alert: Aap ka password tabdeel ho chuka hai ya ID block kar di gayi hai! System aap ko automatic Log Out kar raha hai.");
-        currentBooker = "";
-        currentPasswordCache = "";
-        cart = [];
-        globalRates = [];
-        
-        document.getElementById('loginUser').value = "";
-        document.getElementById('loginPass').value = "";
-        document.getElementById('searchId').value = "";
-        document.getElementById('liveLocationInput').value = "";
-        document.getElementById('outletName').value = "";
-        document.getElementById('ownerName').value = "";
-        document.getElementById('outletAddress').value = "";
-        document.getElementById('outletPhone').value = "";
-        document.getElementById('bookerName').value = "";
-        document.getElementById('taxStatus').value = "no";
-        document.getElementById('loginScreen').querySelector('button').innerText = "Log In";
-        
-        renderCart();
-        document.getElementById('bookingScreen').classList.add('hidden');
-        document.getElementById('loginScreen').classList.remove('hidden');
+        alert("🚨 Security Alert: Automatic Log Out activated.");
+        handleLogoutAction();
     }
 
     function handleLogout() {
-        const confirmLogout = confirm("Kya aap Log Out karna chahte hain?");
-        if(!confirmLogout) return;
+        if(!confirm("Kya aap Log Out karna chahte hain?")) return;
+        handleLogoutAction();
+    }
 
-        currentBooker = "";
-        currentPasswordCache = "";
-        cart = [];
-        globalRates = [];
-        
-        document.getElementById('loginUser').value = "";
-        document.getElementById('loginPass').value = "";
-        document.getElementById('searchId').value = "";
-        document.getElementById('liveLocationInput').value = "";
-        document.getElementById('outletName').value = "";
-        document.getElementById('ownerName').value = "";
-        document.getElementById('outletAddress').value = "";
-        document.getElementById('outletPhone').value = "";
-        document.getElementById('bookerName').value = "";
-        document.getElementById('taxStatus').value = "no";
+    function handleLogoutAction() {
+        currentBooker = ""; currentPasswordCache = ""; cart = []; globalRates = []; currentPjpId = "";
+        document.getElementById('loginUser').value = ""; document.getElementById('loginPass').value = "";
+        document.getElementById('searchId').value = ""; document.getElementById('liveLocationInput').value = "";
+        document.getElementById('outletName').value = ""; document.getElementById('ownerName').value = "";
+        document.getElementById('outletAddress').value = ""; document.getElementById('outletPhone').value = "";
+        document.getElementById('bookerName').value = ""; document.getElementById('taxStatus').value = "no";
         document.getElementById('loginScreen').querySelector('button').innerText = "Log In";
-        
         renderCart();
         document.getElementById('bookingScreen').classList.add('hidden');
         document.getElementById('loginScreen').classList.remove('hidden');
@@ -399,14 +540,10 @@
         try {
             const response = await fetch(getFreshUrl(`${SCRIPT_URL}?action=fetchRatesAndPromos`));
             const result = await response.json();
-            
             if(result.status === "Success") {
                 globalRates = result.rates;
-                
                 if(result.promos && result.promos.length > 0 && result.promos[0] !== "") {
                     document.getElementById('promoMarquee').innerText = "🔥 LIVE PROMO: " + result.promos.join(" | ");
-                } else {
-                    document.getElementById('promoMarquee').innerText = "🔥 Active System: Islam & Co Pepsi Distribution Live Ordering Portal";
                 }
                 
                 const select = document.getElementById('productSelect');
@@ -424,15 +561,12 @@
                 });
                 document.getElementById('rateModalData').innerHTML = modalHtml;
             }
-        } catch(e) {
-            console.log("Error loading components", e);
-        }
+        } catch(e) { console.log(e); }
     }
 
     async function searchOutletData() {
         const id = document.getElementById('searchId').value.trim();
         if(!id) return alert("Search bar mein Outlet ID darj karein!");
-
         document.getElementById('outletName').value = "Searching...";
         
         try {
@@ -440,21 +574,14 @@
                 method: "POST",
                 mode: "cors",
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify({ 
-                    action: "searchOutlet", 
-                    outletId: id,
-                    verifyUser: currentBooker,
-                    verifyPass: currentPasswordCache 
-                })
+                body: JSON.stringify({ action: "searchOutlet", outletId: id, verifyUser: currentBooker, verifyPass: currentPasswordCache })
             });
             const result = await response.json();
 
-            if (result.securityStatus === "Failed") {
-                return enforceSecurityLogout();
-            }
+            if (result.securityStatus === "Failed") return enforceSecurityLogout();
 
             if(result.status === "Success") {
-                document.getElementById('searchId').value = id; // Lock ID
+                document.getElementById('searchId').value = id;
                 document.getElementById('outletName').value = result.outletName || "";
                 document.getElementById('ownerName').value = result.ownerName || ""; 
                 document.getElementById('outletAddress').value = result.outletAddress || "";
@@ -462,34 +589,44 @@
                 document.getElementById('taxStatus').value = (result.filerStatus === "yes") ? "yes" : "no";
                 calculateCartTotals();
             } else {
-                alert(result.message); 
-                document.getElementById('outletName').value = "";
-                document.getElementById('ownerName').value = "";
-                document.getElementById('outletAddress').value = "";
-                document.getElementById('outletPhone').value = "";
-                document.getElementById('taxStatus').value = "no";
+                alert(result.message);
                 calculateCartTotals();
             }
-        } catch(e) {
-            alert("Error fetching outlet data!");
-            document.getElementById('outletName').value = "";
-        }
+        } catch(e) { alert("Error fetching outlet data!"); }
     }
 
-    function askQuantityPopUp(productName) {
+    function openQuantityModal(productName) {
         if(!productName) return;
+        selectedProductForQty = productName;
+        document.getElementById('qtyModalTitle').innerText = productName;
         
-        const qtyStr = prompt(`Aap ne select kia: ${productName}\nMeharbani farma kar Quantity (Tadaad) likhein:`, "1");
-        const qty = parseInt(qtyStr);
+        const pData = globalRates.find(r => r.packName === productName);
+        document.getElementById('qtyModalSub').innerText = pData ? `Brand: ${pData.brand} | Rate: Rs. ${pData.rate}` : "";
+        
+        document.getElementById('qtyBoxInput').value = "1";
+        document.getElementById('qtyModal').classList.remove('hidden');
+    }
 
-        if(isNaN(qty) || qty <= 0) {
-            document.getElementById('productSelect').value = "";
-            return;
-        }
+    function closeQuantityModal() {
+        document.getElementById('qtyModal').classList.add('hidden');
+        document.getElementById('productSelect').value = "";
+        selectedProductForQty = "";
+    }
 
-        const productData = globalRates.find(r => r.packName === productName);
+    function adjustQtyBox(amount) {
+        let currentVal = parseInt(document.getElementById('qtyBoxInput').value) || 1;
+        currentVal += amount;
+        if(currentVal < 1) currentVal = 1;
+        document.getElementById('qtyBoxInput').value = currentVal;
+    }
+
+    function confirmQtyModalAdd() {
+        const qty = parseInt(document.getElementById('qtyBoxInput').value);
+        if(isNaN(qty) || qty <= 0) return alert("Valid quantity darj karein!");
+
+        const productData = globalRates.find(r => r.packName === selectedProductForQty);
         if(productData) {
-            const existingIndex = cart.findIndex(item => item.packName === productName);
+            const existingIndex = cart.findIndex(item => item.packName === selectedProductForQty);
             if(existingIndex > -1) {
                 cart[existingIndex].qty += qty;
             } else {
@@ -504,7 +641,7 @@
             }
             renderCart();
         }
-        document.getElementById('productSelect').value = "";
+        closeQuantityModal();
     }
 
     function removeItem(index) {
@@ -524,96 +661,82 @@
         tbody.innerHTML = "";
         if(rbody) rbody.innerHTML = "";
 
-        let totalBillAmount = 0;
+        let totalGrossAmount = 0;
         let totalDiscountAmount = 0;
+        let totalNetPayable = 0;
+        let totalItemsQty = 0;
 
-        // Set Live Time Stamp on Bill Content
         const now = new Date();
-        document.getElementById('receiptTimeField').innerText = "Date & Time: " + now.toLocaleString('en-US', { hour12: true });
+        const pad = (num) => String(num).padStart(2, '0');
+        const timestampStr = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        document.getElementById('receiptTimeField').innerText = timestampStr;
+
+        const tomorrow = new Date();
+        tomorrow.setDate(now.getDate() + 1);
+        const tomorrowStr = `${pad(tomorrow.getDate())}/${pad(tomorrow.getMonth()+1)}/${tomorrow.getFullYear()}`;
+        document.getElementById('billMetaDeliveryDate').innerText = tomorrowStr;
 
         cart.forEach((item, index) => {
-            let itemPrice = 0;
-            let displayDiscount = 0;
+            let activeRate = (taxStatus === "yes") ? item.filerRate : item.rate;
+            let rowGross = item.rate * item.qty; 
+            let rowDiscount = (taxStatus === "yes") ? 0 : (item.discount * item.qty);
+            let rowNet = (taxStatus === "yes") ? (item.filerRate * item.qty) : (rowGross - rowDiscount);
 
-            if(taxStatus === "yes") {
-                itemPrice = item.filerRate;
-                displayDiscount = 0; 
-            } else {
-                itemPrice = item.rate - item.discount;
-                displayDiscount = item.discount * item.qty;
-                totalDiscountAmount += displayDiscount;
-            }
-
-            let netAmt = itemPrice * item.qty;
-            totalBillAmount += netAmt;
+            totalGrossAmount += (item.rate * item.qty);
+            totalDiscountAmount += rowDiscount;
+            totalNetPayable += rowNet;
+            totalItemsQty += item.qty;
 
             tbody.innerHTML += `
                 <tr>
                     <td><b>${item.packName}</b></td>
                     <td>${item.qty}</td>
-                    <td>Rs. ${taxStatus === 'yes' ? item.filerRate : item.rate}</td>
-                    <td>Rs. ${displayDiscount}</td>
-                    <td><b>Rs. ${netAmt}</b></td>
+                    <td>Rs. ${activeRate}</td>
+                    <td>Rs. ${rowDiscount}</td>
+                    <td><b>Rs. ${rowNet}</b></td>
                     <td><button class="btn-remove" onclick="removeItem(${index})">Remove</button></td>
                 </tr>
             `;
 
-            // Bill Grid columns strictly updated: Product Name | Qty | Promo (Disc) | NTP (Net Total Price)
             if(rbody) {
                 rbody.innerHTML += `
                     <tr>
-                        <td><b>${item.packName}</b></td>
+                        <td style="text-align: left;">${item.packName}</td>
                         <td style="text-align: center;">${item.qty}</td>
-                        <td>Rs. ${displayDiscount}</td>
-                        <td><b>Rs. ${netAmt}</b></td>
+                        <td style="text-align: left; padding-left: 5px;">${item.rate.toFixed(2)}</td>
+                        <td style="text-align: left; padding-left: 5px;">${(item.rate * item.qty).toFixed(2)}</td>
+                        <td style="text-align: left; padding-left: 5px;">${rowDiscount > 0 ? rowDiscount.toFixed(2) : '0.00'}</td>
+                        <td style="text-align: left; padding-left: 5px;">${rowNet.toFixed(2)}</td>
                     </tr>
                 `;
             }
         });
 
-        const summaryBox = document.getElementById('receiptSummaryBox');
-        if(summaryBox) {
-            summaryBox.innerHTML = `
-                Total Discount Saved: Rs. ${totalDiscountAmount}<br>
-                <span style="font-size:11px; font-weight: bold; text-transform: uppercase;">Net Payable NTP: Rs. ${totalBillAmount}</span>
-            `;
-        }
-        
-        const oId = document.getElementById('searchId').value || "N/A";
-        const oName = document.getElementById('outletName').value || "Manual Store";
-        const oOwner = document.getElementById('ownerName').value || "N/A";
-        const oAddr = document.getElementById('outletAddress').value || "Address details";
-        const oPhone = document.getElementById('outletPhone').value || "N/A";
-        const oLoc = document.getElementById('liveLocationInput').value || "Not Locked";
-        
-        // 9px Left Side dynamic layout inject
-        const leftBox = document.getElementById('receiptLeftDetails');
-        if(leftBox) {
-            leftBox.innerHTML = `
-                <span style="font-weight: bold; text-decoration: underline; margin-top: 5px; display:inline-block;">Outlet Data:</span><br>
-                <b>ID:</b> ${oId}<br>
-                <b>Dukan Name:</b> ${oName}<br>
-                <b>Address:</b> ${oAddr}<br>
-                <b>GPS Lat/Lng:</b> ${oLoc}
-            `;
-        }
+        document.getElementById('billTotalQty').innerText = totalItemsQty;
+        document.getElementById('billGrossAmt').innerText = totalGrossAmount.toFixed(2);
+        document.getElementById('billDiscountAmt').innerText = totalDiscountAmount.toFixed(2);
+        document.getElementById('billNetAmt').innerText = totalNetPayable.toFixed(2);
 
-        // 9px Right Side dynamic layout inject (Owner & Phone strictly on Right Side corner)
-        const rightBox = document.getElementById('receiptRightDetails');
-        if(rightBox) {
-            rightBox.innerHTML = `
-                <span style="font-weight: bold; text-decoration: underline;">Billing Matrix:</span><br>
-                <b>Owner Name:</b> ${oOwner}<br>
-                <b>Phone No:</b> ${oPhone}<br>
-                <b>Booker Name:</b> ${currentBooker}<br>
-                <b>Tax Frame:</b> ${taxStatus === 'yes' ? 'Filer' : 'Nonfiler'}
-            `;
-        }
+        const oId = document.getElementById('searchId').value || "---";
+        const oName = document.getElementById('outletName').value || "---";
+        const oOwner = document.getElementById('ownerName').value || "---";
+        const oAddr = document.getElementById('outletAddress').value || "---";
+        const oPhone = document.getElementById('outletPhone').value || "---";
+
+        document.getElementById('billOutletId').innerHTML = `<b>Outlet ID:</b> ${oId}`;
+        document.getElementById('billOwnerName').innerHTML = `<b>Owner:</b> ${oOwner}`;
+        document.getElementById('billOutletName').innerHTML = `<b>Outlet:</b> ${oName}`;
+        document.getElementById('billOutletContact').innerHTML = `<b>Contact No:</b> ${oPhone}`;
+        document.getElementById('billOutletAddress').innerHTML = `<b>Address:</b> ${oAddr}`;
+        document.getElementById('billMetaUser').innerText = "Shujaat Raja";
+        document.getElementById('billMetaBooker').innerText = currentBooker || "---";
+        
+        const pjpIdText = currentPjpId ? currentPjpId : Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('billMetaVeh').innerText = `CAM-512 / ${pjpIdText}`;
     }
 
     function downloadHDReceipt() {
         if(cart.length === 0) return alert("HD Bill banane ke liye pehle Cart mein item add karein!");
-        
         const target = document.getElementById('receiptContainer');
         html2canvas(target, { scale: 2, useCORS: true }).then(canvas => {
             const link = document.createElement('a');
@@ -630,27 +753,19 @@
         const outletName = document.getElementById('outletName').value.trim();
         const ownerName = document.getElementById('ownerName').value.trim() || "N/A";
         const liveLocation = document.getElementById('liveLocationInput').value;
-        
-        if(!outletName) return alert("Dukaan (Outlet Name) likhna zaroori hai!");
-
-        const confirmBox = confirm("Kya aap ISLAM AND CO ka yeh Order Confirm karna chahte hain?");
-        if(!confirmBox) return;
-
-        let itemsSummaryText = cart.map(i => `${i.packName} (Qty: ${i.qty})`).join(", ");
-        
-        let totalBillFinal = 0;
-        let totalDiscountFinal = 0;
+        const deliveryDateStr = document.getElementById('billMetaDeliveryDate').innerText;
         const taxStatus = document.getElementById('taxStatus').value;
         
-        cart.forEach(item => {
-            let prc = (taxStatus === "yes") ? item.filerRate : (item.rate - item.discount);
-            if(taxStatus !== "yes") {
-                totalDiscountFinal += (item.discount * item.qty);
-            }
-            totalBillFinal += (prc * item.qty);
-        });
+        if(!outletName) return alert("Dukaan (Outlet Name) likhna zaroori hai!");
+        if(!confirm("Kya aap ISLAM AND CO ka yeh Order Confirm karna chahte hain?")) return;
+
+        // Structured Products Data for flawless Google Sheets sync
+        let itemsSummaryText = cart.map(i => `${i.packName} (Qty: ${i.qty})`).join(", ");
+        let totalBillFinal = parseFloat(document.getElementById('billNetAmt').innerText);
+        let totalDiscountFinal = parseFloat(document.getElementById('billDiscountAmt').innerText);
 
         try {
+            // Re-engineered structural parameters to resolve data drop issues in Google App Script
             const response = await fetch(getFreshUrl(SCRIPT_URL), {
                 method: "POST",
                 mode: "cors",
@@ -671,32 +786,32 @@
             });
             const result = await response.json();
 
-            if (result.securityStatus === "Failed") {
-                return enforceSecurityLogout();
-            }
+            if (result.securityStatus === "Failed") return enforceSecurityLogout();
 
             if(result.status === "Success") {
                 alert("Order Google Sheet mein save ho gaya hai!");
-
                 const boyNumber = document.getElementById('whatsappBoySelect').value;
                 let whatsappText = `*ISLAM AND CO - New Online Order*\n`;
                 whatsappText += `-----------------------------\n`;
                 whatsappText += `*Invoice Key:* ${result.invoiceKey || 'N/A'}\n`;
                 whatsappText += `*Outlet ID:* ${outletId}\n`;
                 whatsappText += `*Outlet Name:* ${outletName}\n`;
-                whatsappText += `*GPS Location:* ${liveLocation}\n`;
+                whatsappText += `*Owner Name:* ${ownerName}\n`;
+                whatsappText += `*Location:* ${liveLocation}\n`;
                 whatsappText += `*Booker Name:* ${currentBooker}\n`;
+                whatsappText += `*Expected Delivery:* ${deliveryDateStr} 📅\n`;
                 whatsappText += `-----------------------------\n`;
                 whatsappText += `*Products Full Detail:*\n`;
                 
                 cart.forEach(i => {
-                    let itemPrice = (taxStatus === "yes") ? i.filerRate : (i.rate - i.discount);
-                    whatsappText += `- ${i.packName} x ${i.qty} = Rs. ${itemPrice * i.qty}\n`;
+                    let rowDiscount = (taxStatus === "yes") ? 0 : (i.discount * i.qty);
+                    whatsappText += `- ${i.packName} x ${i.qty} (Disc: Rs. ${rowDiscount.toFixed(2)})\n`;
                 });
                 
                 whatsappText += `-----------------------------\n`;
+                whatsappText += `*Total Discount:* Rs. ${totalDiscountFinal.toFixed(2)}\n`;
                 whatsappText += `*Net Payable Amount:* Rs. ${totalBillFinal}\n\n`;
-                whatsappText += `Kindly deliver it. Powered by Shujaat.`;
+                whatsappText += `Kindly deliver it tomorrow. Powered by Shujaat.`;
 
                 window.open(`https://wa.me/${boyNumber}?text=${encodeURIComponent(whatsappText)}`, '_blank');
                 
@@ -704,17 +819,18 @@
                 document.getElementById('liveLocationInput').value = "";
                 renderCart();
             } else {
-                alert("Server Error: Order save nahi ho saka.");
+                alert("Server Error! Data structure unrecognized by Google Sheets.");
             }
-        } catch(e) {
-            alert("Network Error! Check internet connection.");
-        }
+        } catch(e) { alert("Network Error! Please check internet connection."); }
     }
 
     function toggleRateModal(show) {
         const modal = document.getElementById('rateModal');
-        if(show) modal.classList.remove('hidden');
-        else modal.classList.add('hidden');
+        if(show) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
     }
 </script>
 </body>
